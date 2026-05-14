@@ -9,6 +9,12 @@ const searchSchema = z.object({
   plan: z.enum(["explorer", "navigator", "voyager"]).optional(),
 });
 
+const planLabel: Record<NonNullable<z.infer<typeof searchSchema>["plan"]>, string> = {
+  explorer: "Explorer (Free)",
+  navigator: "Navigator (₹12,000 / year)",
+  voyager: "Voyager (₹15,000 / year)",
+};
+
 export const Route = createFileRoute("/portfolios")({
   validateSearch: searchSchema,
   head: () => ({
@@ -64,7 +70,11 @@ function PortfoliosPage() {
               Portfolio Strategies
             </h1>
             <p className="mt-6 text-[17px] text-[#6B7280] max-w-2xl leading-[1.8]">
-              Your selected plan {plan ? <span className="text-[var(--navy)] font-medium capitalize">({plan})</span> : null} unlocks access to these curated model portfolios. Built on the Voyyage Vector Framework.
+              Your selected plan{" "}
+              {plan ? (
+                <span className="text-[var(--navy)] font-medium">({planLabel[plan]})</span>
+              ) : null}{" "}
+              unlocks access to these curated model portfolios. Built on the Voyyage Vector Framework.
             </p>
           </FadeUp>
 

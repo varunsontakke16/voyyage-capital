@@ -2,44 +2,55 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { FadeUp } from "../motion-primitives";
 
-const plans = [
+type PlanRow = { label: string; included: boolean };
+
+const plans: Array<{
+  tierName: string;
+  price: string;
+  priceNote: string;
+  features: PlanRow[];
+  slug: "explorer" | "navigator" | "voyager";
+  featured: boolean;
+}> = [
   {
-    name: "Explorer",
-    price: "₹999",
-    ideal: "First-time systematic investors",
+    tierName: "Explorer",
+    price: "Free",
+    priceNote: "",
     features: [
-      "1 model portfolio (Momentum Core)",
-      "Quarterly rebalancing alerts",
-      "Stock weightage calculator",
-      "Email support",
+      { label: "3 Research reports", included: true },
+      { label: "The Voyyage Vector Model", included: false },
+      { label: "Rebalancing updates", included: false },
+      { label: "Industry research reports", included: false },
+      { label: "Sectoral updates", included: false },
+      { label: "Access to whatsapp community", included: false },
     ],
     slug: "explorer",
     featured: false,
   },
   {
-    name: "Navigator",
-    price: "₹2,499",
-    ideal: "Growing portfolios ₹5L–₹25L",
+    tierName: "Navigator",
+    price: "₹12,000",
+    priceNote: "Billed annually",
     features: [
-      "3 model portfolios",
-      "Monthly rebalancing + real-time alerts",
-      "Weightage calculator",
-      "Priority WhatsApp support",
-      "Sector rotation signals",
+      { label: "The Voyyage Vector Model", included: true },
+      { label: "Rebalancing updates", included: true },
+      { label: "Industry research reports", included: false },
+      { label: "Sectoral updates", included: false },
+      { label: "Access to whatsapp community", included: false },
     ],
     slug: "navigator",
     featured: true,
   },
   {
-    name: "Voyager",
-    price: "₹5,999",
-    ideal: "HNIs ₹25L+",
+    tierName: "Voyager",
+    price: "₹15,000",
+    priceNote: "Billed annually",
     features: [
-      "All model portfolios",
-      "High-frequency rebalancing alerts",
-      "1-on-1 quarterly review call",
-      "Custom risk profiling",
-      "Dedicated advisor access",
+      { label: "The Voyyage Vector Model", included: true },
+      { label: "Rebalancing updates", included: true },
+      { label: "Industry research reports", included: true },
+      { label: "Sectoral updates", included: true },
+      { label: "Access to whatsapp community", included: true },
     ],
     slug: "voyager",
     featured: false,
@@ -57,7 +68,7 @@ export function Plans() {
               Choose your portfolio.
             </h2>
             <p className="mt-6 text-[17px] text-[#6B7280] leading-[1.8]">
-              Each plan grants access to our data-driven model portfolios. Select the tier that fits your capital and ambition.
+              Start with free research reports or unlock the full Voyyage Vector experience with an annual subscription.
             </p>
           </FadeUp>
         </div>
@@ -78,20 +89,33 @@ export function Plans() {
                     Most Popular
                   </div>
                 )}
-                <div className="text-[12px] uppercase tracking-[0.15em] text-[var(--gold)]">{p.name}</div>
-                <div className="mt-4 flex items-baseline gap-2">
+                <div className="text-[12px] uppercase tracking-[0.15em] text-[var(--gold)]">{p.tierName}</div>
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="font-display text-[56px] font-light text-[#1A1A1A] leading-none">{p.price}</span>
-                  <span className="text-[14px] text-[#6B7280]">/mo</span>
                 </div>
-                <p className="mt-2 text-[13px] text-[#6B7280]">Ideal for: {p.ideal}</p>
+                {p.priceNote ? (
+                  <p className="mt-2 text-[13px] text-[#6B7280]">{p.priceNote}</p>
+                ) : null}
 
                 <div className="my-8 h-px bg-[var(--border)]" />
 
                 <ul className="space-y-4">
                   {p.features.map((f) => (
-                    <li key={f} className="flex gap-3 text-[15px] text-[#1A1A1A]">
-                      <Check size={18} className="text-[var(--gold)] flex-shrink-0 mt-0.5" />
-                      <span>{f}</span>
+                    <li
+                      key={`${p.slug}-${f.label}`}
+                      className={`flex gap-3 text-[15px] ${f.included ? "text-[#1A1A1A]" : "text-[#9CA3AF]"}`}
+                    >
+                      <span
+                        className={`mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full border text-[10px] leading-none ${
+                          f.included
+                            ? "border-[var(--gold)] bg-[var(--gold)]/10 text-[var(--gold)]"
+                            : "border-[#E5E7EB] bg-[#F9FAFB] text-[#9CA3AF]"
+                        }`}
+                        aria-hidden
+                      >
+                        {f.included ? <Check size={11} strokeWidth={3} /> : null}
+                      </span>
+                      <span>{f.label}</span>
                     </li>
                   ))}
                 </ul>
