@@ -689,10 +689,7 @@ export function AnalyticsWorkspace() {
 
       <main className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-4 py-6 md:px-6">
         <div>
-          <h1 className="font-display text-3xl md:text-4xl font-light tracking-tight">Premium analytics</h1>
-          <p className="mt-2 max-w-3xl text-sm text-muted-foreground leading-relaxed">
-            Live market data via Polygon, Finnhub, Alpha Vantage, and Twelve Data. Configure API keys server-side; figures stream from upstream providers.
-          </p>
+          <h1 className="font-display text-3xl md:text-4xl font-light tracking-tight">Terminal</h1>
         </div>
 
         <Tabs defaultValue="dashboard" className="flex flex-col gap-4">
