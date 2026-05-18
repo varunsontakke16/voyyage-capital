@@ -33,7 +33,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fmtINR, fmtPct } from "@/lib/format-money";
-import { displaySymbol, INDIAN_DEFAULT_CHART_SYMBOL } from "@/lib/market-data/india";
+import { displaySymbol, INDIAN_DEFAULT_CHART_SYMBOL, quoteLastPrice } from "@/lib/market-data/india";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 type ChartRange = "1D" | "1W" | "1M" | "1Y" | "MAX";
@@ -56,7 +56,7 @@ function CandlePanel({ symbol, range, dark }: { symbol: string; range: ChartRang
     queryKey: ["analytics-candles", symbol, range],
     queryFn: () => getChartCandles({ data: { symbol, range } }),
     enabled: Boolean(symbol),
-    staleTime: 30_000,
+    staleTime: 60_000,
   });
 
   useEffect(() => {
@@ -321,7 +321,7 @@ function DashboardTab({
                 >
                   <span className="font-medium">{displaySymbol(row.symbol)}</span>
                   <span className={row.quote && row.quote.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"}>
-                    {row.quote ? fmtINR(row.quote.price) : "—"}
+                    {quoteLastPrice(row.quote) != null ? fmtINR(quoteLastPrice(row.quote)!) : "—"}
                   </span>
                 </button>
               ))}
@@ -412,7 +412,7 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
     queryKey: ["enriched", activeId, session?.portfolios.length],
     queryFn: () => getPortfoliosEnriched({ data: { portfolioId: activeId! } }),
     enabled: Boolean(activeId),
-    refetchInterval: 15_000,
+    refetchInterval: 60_000,
   });
 
   const exportCsv = async () => {
@@ -499,7 +499,6 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
                 <th className="px-3 py-2">Last</th>
                 <th className="px-3 py-2">Value</th>
                 <th className="px-3 py-2">Alloc %</th>
-                <th className="px-3 py-2">Div yield</th>
                 <th className="px-3 py-2">uPnL</th>
                 <th className="px-3 py-2">Signal</th>
               </tr>
@@ -507,7 +506,7 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
             <tbody>
               {enriched.isLoading ? (
                 <tr>
-                  <td colSpan={9} className="px-3 py-8 text-center text-muted-foreground">
+                  <td colSpan={8} className="px-3 py-8 text-center text-muted-foreground">
                     <Loader2 className="inline h-5 w-5 animate-spin" />
                   </td>
                 </tr>
@@ -516,17 +515,16 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
                 <tr key={`${r.symbol}-${r.qty}`} className="border-t border-border hover:bg-accent/20">
                   <td className="px-3 py-2">
                     <button type="button" className="font-medium text-gold hover:underline" onClick={() => setSheetSymbol(r.symbol)}>
-                      {r.symbol}
+                      {displaySymbol(r.symbol)}
                     </button>
                   </td>
                   <td className="px-3 py-2">{r.qty}</td>
                   <td className="px-3 py-2">{fmtINR(r.avgCost)}</td>
-                  <td className="px-3 py-2">{fmtINR(r.last)}</td>
-                  <td className="px-3 py-2">{fmtINR(r.marketValue)}</td>
-                  <td className="px-3 py-2">{r.allocationPct.toFixed(1)}%</td>
-                  <td className="px-3 py-2 text-muted-foreground">
-                    {r.dividendYieldAnnual != null ? `${(r.dividendYieldAnnual * 100).toFixed(2)}%` : "—"}
+                  <td className="px-3 py-2">
+                    {r.last != null ? fmtINR(r.last) : "—"}
                   </td>
+                  <td className="px-3 py-2">{r.last != null ? fmtINR(r.marketValue) : "—"}</td>
+                  <td className="px-3 py-2">{r.last != null ? `${r.allocationPct.toFixed(1)}%` : "—"}</td>
                   <td className={`px-3 py-2 ${r.unrealized >= 0 ? "text-emerald-400" : "text-rose-400"}`}>{fmtINR(r.unrealized)}</td>
                   <td className="px-3 py-2 capitalize text-xs">{r.strategy.replace("_", " ")}</td>
                 </tr>
@@ -583,7 +581,9 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
               <div className="space-y-4 text-sm">
                 <div>
                   <div className="text-muted-foreground text-xs uppercase tracking-widest">Quote</div>
-                  <div className="text-2xl font-display mt-1">{detail.data.quote ? fmtINR(detail.data.quote.price) : "—"}</div>
+                  <div className="text-2xl font-display mt-1">
+                    {quoteLastPrice(detail.data.quote) != null ? fmtINR(quoteLastPrice(detail.data.quote)!) : "—"}
+                  </div>
                   {detail.data.quote ? (
                     <div className={detail.data.quote.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"}>
                       {fmtPct(detail.data.quote.changePercent)}

@@ -1,6 +1,8 @@
 /** Shared DTOs for market data providers (API-agnostic). */
 
-export type MarketProviderId = "polygon" | "finnhub" | "alphavantage" | "twelvedata";
+export type MarketProviderId = "polygon" | "finnhub" | "alphavantage" | "twelvedata" | "yahoo";
+
+export type ChartRange = "1D" | "1W" | "1M" | "1Y" | "MAX";
 
 export type QuoteDTO = {
   symbol: string;

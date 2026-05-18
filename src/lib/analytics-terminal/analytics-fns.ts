@@ -13,8 +13,10 @@ import {
   INDIAN_DEFAULT_WATCHLIST,
   INDIAN_INDEX_SYMBOLS,
   INDIAN_SECTOR_SYMBOLS,
+  quoteLastPrice,
   rankIndianMovers,
 } from "@/lib/market-data/india";
+import { yahooSearch } from "@/lib/market-data/providers/yahoo";
 import { getBestQuote, getCandles, getQuotesForSymbols, type ChartRange } from "@/lib/market-data/service";
 import { enrichPortfolioEntity } from "./enrich-portfolio";
 import { readModelPortfolios } from "./portfolio-store";
@@ -48,7 +50,9 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     const sectorSymbols = parseSymbolList("ANALYTICS_SECTOR_SYMBOLS", INDIAN_SECTOR_SYMBOLS);
     const watchlist = [...new Set([...(data.watchlist ?? []), ...defaultWatch])].slice(0, 40);
 
-    const quoteKeys = [...new Set([...indexSymbols, ...watchlist, ...sectorSymbols])];
+    const sessionData = await readModelPortfolios();
+    const portfolioSymbols = sessionData.portfolios.flatMap((p) => p.positions.map((x) => x.symbol));
+    const quoteKeys = [...new Set([...indexSymbols, ...watchlist, ...sectorSymbols, ...portfolioSymbols])];
     const quotes = await getQuotesForSymbols(quoteKeys);
 
     let news: Awaited<ReturnType<typeof finnhubMarketNews>> = [];
@@ -63,16 +67,12 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     const moverSymbols = [...new Set([...defaultWatch, ...(data.watchlist ?? [])])].slice(0, 40);
     const { gainers, losers } = rankIndianMovers(moverSymbols, quotes);
 
-    const sessionData = await readModelPortfolios();
-
-    const portfolioSymbols = sessionData.portfolios.flatMap((p) => p.positions.map((x) => x.symbol));
-    const pq = await getQuotesForSymbols(portfolioSymbols);
+    const pq = quotes;
     let totalValue = 0;
     let totalCost = 0;
     for (const port of sessionData.portfolios) {
       for (const pos of port.positions) {
-        const q = pq[pos.symbol];
-        const px = q?.price ?? 0;
+        const px = quoteLastPrice(pq[pos.symbol]) ?? 0;
         totalValue += px * pos.qty;
         totalCost += pos.avgCost * pos.qty;
       }
@@ -82,8 +82,9 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     for (const port of sessionData.portfolios) {
       for (const pos of port.positions) {
         const q = pq[pos.symbol];
-        if (q && typeof q.prevClose === "number" && q.prevClose > 0) {
-          dayPnlFromQuotes += (q.price - q.prevClose) * pos.qty;
+        const last = quoteLastPrice(q);
+        if (q && last != null && typeof q.prevClose === "number" && q.prevClose > 0) {
+          dayPnlFromQuotes += (last - q.prevClose) * pos.qty;
         }
       }
     }
@@ -91,7 +92,7 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     const bucket: Record<string, number> = {};
     for (const port of sessionData.portfolios) {
       for (const pos of port.positions) {
-        const px = pq[pos.symbol]?.price ?? 0;
+        const px = quoteLastPrice(pq[pos.symbol]) ?? 0;
         bucket[pos.symbol] = (bucket[pos.symbol] ?? 0) + px * pos.qty;
       }
     }
@@ -142,8 +143,10 @@ export const symbolSearch = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => searchInput.parse(d))
   .handler(async ({ data }) => {
     requireSubscriber();
-    const finnhubKey = process.env.FINNHUB_API_KEY;
-    if (!finnhubKey) return { results: [] as { symbol: string; description: string }[] };
+    const results = await yahooSearch(data.q);
+    if (results.length > 0) return { results };
+    const finnhubKey = process.env.FINNHUB_API_KEY?.trim();
+    if (!finnhubKey) return { results: [] };
     return { results: await finnhubSearch(finnhubKey, data.q) };
   });
 
@@ -208,7 +211,6 @@ export const exportPortfolioCsv = createServerFn({ method: "POST" })
       "unrealized",
       "unrealizedPct",
       "allocationPct",
-      "divYield",
       "strategy",
     ].join(",");
     const body = enriched.rows
@@ -222,7 +224,6 @@ export const exportPortfolioCsv = createServerFn({ method: "POST" })
           r.unrealized,
           r.unrealizedPct.toFixed(4),
           r.allocationPct.toFixed(4),
-          r.dividendYieldAnnual ?? "",
           r.strategy,
         ].join(","),
       )

@@ -16,12 +16,16 @@ export async function finnhubQuote(token: string, symbol: string): Promise<Quote
   const url = `${BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(token)}`;
   type Q = { c: number; d: number; dp: number; h: number; l: number; o: number; pc: number; t: number };
   const q = await fetchJson<Q>(url);
-  if (!q || q.c === 0) return null;
+  if (!q) return null;
+  const price = q.c > 0 ? q.c : q.pc > 0 ? q.pc : 0;
+  if (price <= 0) return null;
+  const change = q.c > 0 ? q.d : 0;
+  const changePercent = q.c > 0 ? q.dp : 0;
   return {
     symbol,
-    price: q.c,
-    change: q.d,
-    changePercent: q.dp,
+    price,
+    change,
+    changePercent,
     high: q.h,
     low: q.l,
     open: q.o,
@@ -86,12 +90,22 @@ export async function finnhubSearch(token: string, q: string): Promise<SymbolSea
   const url = `${BASE}/search?q=${encodeURIComponent(q)}&token=${encodeURIComponent(token)}`;
   type S = { result?: { description: string; displaySymbol: string; symbol: string; type: string }[] };
   const d = await fetchJson<S>(url);
-  return (d.result ?? []).slice(0, 20).map((r) => ({
-    symbol: r.symbol,
-    description: r.description,
-    type: r.type,
-    exchange: r.displaySymbol,
-  }));
+  return (d.result ?? [])
+    .filter(
+      (r) =>
+        /\.(NS|BO)$/i.test(r.symbol) ||
+        r.symbol.startsWith("^") ||
+        /^NIFTY/i.test(r.symbol) ||
+        /NSE|BSE/i.test(r.displaySymbol ?? "") ||
+        /NSE|BSE/i.test(r.description ?? ""),
+    )
+    .slice(0, 20)
+    .map((r) => ({
+      symbol: r.symbol,
+      description: r.description,
+      type: r.type,
+      exchange: r.displaySymbol,
+    }));
 }
 
 export async function finnhubProfile(token: string, symbol: string): Promise<CompanyProfileDTO | null> {
