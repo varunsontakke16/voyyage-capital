@@ -23,12 +23,19 @@ import {
 import {
   bookWeightPct,
   normalizePositions,
+  normalizeTransactions,
   positionBookValue,
+  positionsFromTransactions,
   qtyFromTargetWeight,
   syncTargetWeights,
   totalBookValue,
 } from "@/lib/analytics-terminal/admin-portfolio-math";
-import type { AnalyticsSessionData, PortfolioEntity, PortfolioPosition } from "@/lib/analytics-terminal/portfolio-schema";
+import type {
+  AnalyticsSessionData,
+  PortfolioEntity,
+  PortfolioPosition,
+  PortfolioTransaction,
+} from "@/lib/analytics-terminal/portfolio-schema";
 import { displaySymbol, normalizeIndianSymbol } from "@/lib/market-data/india";
 import { fmtINR, fmtPct } from "@/lib/format-money";
 import { Button } from "@/components/ui/button";
@@ -101,7 +108,9 @@ function AdminLogin({ onSuccess }: { onSuccess: () => void }) {
 function emptyDraft(portfolio: PortfolioEntity): PortfolioEntity {
   return {
     ...portfolio,
+    ...(typeof portfolio.initialCapital === "number" ? {} : { initialCapital: 50_000 }),
     positions: normalizePositions([...portfolio.positions]),
+    transactions: normalizeTransactions([...(portfolio.transactions ?? [])]),
   };
 }
 
@@ -126,6 +135,14 @@ function AdminEditor() {
   const [addWeight, setAddWeight] = useState("");
   const [deletePortfolioOpen, setDeletePortfolioOpen] = useState(false);
   const [removeSymbol, setRemoveSymbol] = useState<string | null>(null);
+  const [addTxOpen, setAddTxOpen] = useState(false);
+  const [txSymbol, setTxSymbol] = useState("");
+  const [txSide, setTxSide] = useState<PortfolioTransaction["side"]>("buy");
+  const [txQty, setTxQty] = useState("");
+  const [txPrice, setTxPrice] = useState("");
+  const [txAmount, setTxAmount] = useState("");
+  const [txAt, setTxAt] = useState(() => new Date().toISOString().slice(0, 10));
+  const [txNote, setTxNote] = useState("");
 
   const load = useCallback(async () => {
     const s = await getAdminPortfolios();
@@ -196,10 +213,14 @@ function AdminEditor() {
 
   const saveDraft = async () => {
     if (!draft || !activeId) return;
+    const txs = normalizeTransactions(draft.transactions ?? []);
+    const rebuilt = txs.length > 0 ? positionsFromTransactions(txs, draft.positions).positions : draft.positions;
     const normalized = {
       ...draft,
       name: draft.name.trim() || "Untitled portfolio",
-      positions: normalizePositions(draft.positions),
+      initialCapital: Math.max(0, Number(draft.initialCapital) || 0),
+      transactions: txs,
+      positions: normalizePositions(rebuilt),
     };
     const portfolios = (data?.portfolios ?? []).map((p) => (p.id === activeId ? normalized : p));
     await persistAll(portfolios);
@@ -210,7 +231,7 @@ function AdminEditor() {
     const name = newPortfolioName.trim();
     if (!name) return;
     const id = crypto.randomUUID();
-    const portfolio: PortfolioEntity = { id, name, positions: [], description: "" };
+    const portfolio: PortfolioEntity = { id, name, positions: [], description: "", transactions: [], initialCapital: 50_000 };
     const portfolios = [...(data?.portfolios ?? []), portfolio];
     await persistAll(portfolios);
     setNewPortfolioOpen(false);
@@ -304,6 +325,50 @@ function AdminEditor() {
     setAddWeight("");
   };
 
+  const submitAddTransaction = () => {
+    if (!draft) return;
+    const symbol = normalizeIndianSymbol(txSymbol);
+    if (!symbol) return;
+    const qty = Number(txQty);
+    const price = Number(txPrice);
+    let amount = Number(txAmount);
+    const nextSide = txSide;
+    if (nextSide !== "dividend" && qty > 0 && price > 0) {
+      amount = qty * price;
+    }
+    const entry: PortfolioTransaction = {
+      id: crypto.randomUUID(),
+      symbol,
+      side: nextSide,
+      at: txAt || new Date().toISOString().slice(0, 10),
+      ...(nextSide !== "dividend" && qty > 0 ? { qty } : {}),
+      ...(nextSide !== "dividend" && price >= 0 ? { price } : {}),
+      ...(Number.isFinite(amount) ? { amount } : {}),
+      ...(txNote.trim() ? { note: txNote.trim() } : {}),
+    };
+    const txs = normalizeTransactions([...(draft.transactions ?? []), entry]);
+    const rebuilt = positionsFromTransactions(txs, draft.positions);
+    setDraft((d) => (d ? { ...d, transactions: txs, positions: rebuilt.positions } : d));
+    setDirty(true);
+    setStatus(rebuilt.warnings[0] ?? "");
+    setAddTxOpen(false);
+    setTxSymbol("");
+    setTxQty("");
+    setTxPrice("");
+    setTxAmount("");
+    setTxNote("");
+  };
+
+  const removeTransaction = (id: string) => {
+    setDraft((d) => {
+      if (!d) return d;
+      const txs = normalizeTransactions((d.transactions ?? []).filter((t) => t.id !== id));
+      const rebuilt = positionsFromTransactions(txs, d.positions);
+      return { ...d, transactions: txs, positions: rebuilt.positions };
+    });
+    setDirty(true);
+  };
+
   const rebalanceFromWeights = () => {
     setDraft((d) => {
       if (!d) return d;
@@ -380,6 +445,9 @@ function AdminEditor() {
         >
           <Plus className="h-4 w-4" /> Add holding
         </Button>
+        <Button type="button" variant="secondary" onClick={() => setAddTxOpen(true)} disabled={!draft || saving} className="gap-2">
+          <Plus className="h-4 w-4" /> Add transaction
+        </Button>
         <Button
           type="button"
           onClick={() => void saveDraft()}
@@ -445,6 +513,20 @@ function AdminEditor() {
                   className="mt-1"
                 />
               </div>
+              <div>
+                <Label htmlFor="pf-capital">Initial capital (INR)</Label>
+                <Input
+                  id="pf-capital"
+                  type="number"
+                  min={0}
+                  value={draft.initialCapital ?? 0}
+                  onChange={(e) => {
+                    setDraft((d) => (d ? { ...d, initialCapital: Math.max(0, Number(e.target.value) || 0) } : d));
+                    setDirty(true);
+                  }}
+                  className="mt-1"
+                />
+              </div>
               <div className="flex flex-wrap items-end gap-2 sm:justify-end">
                 <Button
                   type="button"
@@ -479,6 +561,47 @@ function AdminEditor() {
                 placeholder="e.g. Large-cap quality tilt, quarterly rebalance…"
                 className="mt-1 min-h-[72px]"
               />
+            </div>
+
+            <div className="rounded-lg border border-border/60 p-3">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground">Transaction ledger</p>
+                <p className="text-xs text-muted-foreground">{(draft.transactions ?? []).length} entries</p>
+              </div>
+              <div className="overflow-x-auto max-h-64">
+                <table className="w-full text-xs">
+                  <thead className="text-left text-muted-foreground border-b border-border">
+                    <tr>
+                      <th className="py-1 pr-2">Date</th>
+                      <th className="py-1 pr-2">Side</th>
+                      <th className="py-1 pr-2">Symbol</th>
+                      <th className="py-1 pr-2">Qty</th>
+                      <th className="py-1 pr-2">Price</th>
+                      <th className="py-1 pr-2">Amount</th>
+                      <th className="py-1 pr-2">Note</th>
+                      <th className="py-1" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(draft.transactions ?? []).map((t) => (
+                      <tr key={t.id} className="border-b border-border/40">
+                        <td className="py-1 pr-2 whitespace-nowrap">{t.at}</td>
+                        <td className="py-1 pr-2 capitalize">{t.side}</td>
+                        <td className="py-1 pr-2">{displaySymbol(t.symbol)}</td>
+                        <td className="py-1 pr-2">{t.qty ?? "—"}</td>
+                        <td className="py-1 pr-2">{typeof t.price === "number" ? fmtINR(t.price) : "—"}</td>
+                        <td className="py-1 pr-2">{typeof t.amount === "number" ? fmtINR(t.amount) : "—"}</td>
+                        <td className="py-1 pr-2 truncate max-w-[220px]">{t.note ?? "—"}</td>
+                        <td className="py-1 text-right">
+                          <Button type="button" size="icon" variant="ghost" className="h-6 w-6" onClick={() => removeTransaction(t.id)}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-3 text-sm">
@@ -709,6 +832,62 @@ function AdminEditor() {
             </Button>
             <Button type="button" onClick={submitAddHolding} disabled={!addSymbol.trim()}>
               Add to draft
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={addTxOpen} onOpenChange={setAddTxOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add transaction</DialogTitle>
+            <DialogDescription>Record buys/sells/dividends; holdings auto-update from this ledger.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="tx-date">Date</Label>
+              <Input id="tx-date" value={txAt} onChange={(e) => setTxAt(e.target.value)} className="mt-1" />
+            </div>
+            <div>
+              <Label htmlFor="tx-side">Side</Label>
+              <select
+                id="tx-side"
+                value={txSide}
+                onChange={(e) => setTxSide(e.target.value as PortfolioTransaction["side"])}
+                className="mt-1 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              >
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+                <option value="dividend">Dividend</option>
+              </select>
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="tx-symbol">Symbol</Label>
+              <Input id="tx-symbol" value={txSymbol} onChange={(e) => setTxSymbol(e.target.value)} placeholder="ABCAPITAL" className="mt-1" />
+            </div>
+            <div>
+              <Label htmlFor="tx-qty">Qty</Label>
+              <Input id="tx-qty" type="number" min={0} value={txQty} onChange={(e) => setTxQty(e.target.value)} className="mt-1" />
+            </div>
+            <div>
+              <Label htmlFor="tx-price">Price (INR)</Label>
+              <Input id="tx-price" type="number" min={0} value={txPrice} onChange={(e) => setTxPrice(e.target.value)} className="mt-1" />
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="tx-amount">Amount (optional; auto for buy/sell)</Label>
+              <Input id="tx-amount" type="number" value={txAmount} onChange={(e) => setTxAmount(e.target.value)} className="mt-1" />
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="tx-note">Note</Label>
+              <Input id="tx-note" value={txNote} onChange={(e) => setTxNote(e.target.value)} className="mt-1" placeholder="Optional" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setAddTxOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="button" onClick={submitAddTransaction} disabled={!txSymbol.trim()}>
+              Add transaction
             </Button>
           </DialogFooter>
         </DialogContent>

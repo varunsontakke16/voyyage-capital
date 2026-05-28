@@ -24,6 +24,7 @@ export const portfolioSchema = z.object({
   id: z.string().min(1).max(64),
   name: z.string().min(1).max(120),
   description: z.string().max(500).optional(),
+  initialCapital: z.number().nonnegative().optional(),
   positions: z.array(positionSchema).max(200),
   transactions: z.array(transactionSchema).max(2000).optional(),
 });

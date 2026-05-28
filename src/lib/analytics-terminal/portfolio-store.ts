@@ -14,6 +14,7 @@ async function ensurePortfolioSchemaColumns(): Promise<void> {
   if (schemaChecked) return;
   const db = getDb();
   await db.execute(sql`ALTER TABLE "model_portfolios" ADD COLUMN IF NOT EXISTS "description" text`);
+  await db.execute(sql`ALTER TABLE "model_portfolios" ADD COLUMN IF NOT EXISTS "initial_capital" double precision`);
   await db.execute(sql`ALTER TABLE "model_positions" ADD COLUMN IF NOT EXISTS "target_weight_pct" double precision`);
   schemaChecked = true;
 }
@@ -62,6 +63,7 @@ export async function readModelPortfolios(): Promise<AnalyticsSessionData> {
     id: p.id,
     name: p.name,
     ...(p.description ? { description: p.description } : {}),
+    ...(typeof p.initialCapital === "number" ? { initialCapital: p.initialCapital } : {}),
     positions: positionsByPortfolio.get(p.id) ?? [],
     transactions: transactionsByPortfolio.get(p.id),
   }));
@@ -86,6 +88,7 @@ export async function writeModelPortfolios(data: AnalyticsSessionData): Promise<
         id: portfolio.id,
         name: portfolio.name,
         description: portfolio.description ?? null,
+        initialCapital: portfolio.initialCapital ?? null,
         createdAt: now,
         updatedAt: now,
       });

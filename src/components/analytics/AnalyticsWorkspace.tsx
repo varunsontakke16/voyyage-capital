@@ -24,6 +24,7 @@ import {
   getHoldingDetail,
   getPortfolioSession,
   getPortfoliosEnriched,
+  getSubscriberHistory,
   symbolSearch,
 } from "@/lib/analytics-terminal/analytics-fns";
 import type { AnalyticsSessionData } from "@/lib/analytics-terminal/portfolio-schema";
@@ -656,6 +657,68 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
   );
 }
 
+function HistoryTab() {
+  const history = useQuery({
+    queryKey: ["subscriber-history"],
+    queryFn: () => getSubscriberHistory(),
+    refetchInterval: 30_000,
+    staleTime: 20_000,
+    refetchOnWindowFocus: false,
+  });
+
+  const rows = history.data?.rows ?? [];
+  return (
+    <div className="rounded-lg border border-border bg-card/30 p-4">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div>
+          <h3 className="text-sm uppercase tracking-widest text-muted-foreground">Portfolio activity history</h3>
+          <p className="text-xs text-muted-foreground mt-1">Latest model buy/sell/dividend changes published by admin.</p>
+        </div>
+        <Button type="button" variant="outline" size="sm" onClick={() => history.refetch()}>
+          Refresh
+        </Button>
+      </div>
+      <div className="overflow-x-auto max-h-[560px]">
+        <table className="w-full text-sm">
+          <thead className="bg-muted/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
+            <tr>
+              <th className="px-3 py-2">Date</th>
+              <th className="px-3 py-2">Portfolio</th>
+              <th className="px-3 py-2">Side</th>
+              <th className="px-3 py-2">Symbol</th>
+              <th className="px-3 py-2">Qty</th>
+              <th className="px-3 py-2">Price</th>
+              <th className="px-3 py-2">Amount</th>
+              <th className="px-3 py-2">Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={`${r.portfolioId}-${r.id}`} className="border-t border-border hover:bg-accent/20">
+                <td className="px-3 py-2 whitespace-nowrap">{r.at}</td>
+                <td className="px-3 py-2">{r.portfolioName}</td>
+                <td className="px-3 py-2 capitalize">{r.side}</td>
+                <td className="px-3 py-2">{displaySymbol(r.symbol)}</td>
+                <td className="px-3 py-2">{r.qty ?? "—"}</td>
+                <td className="px-3 py-2">{typeof r.price === "number" ? fmtINR(r.price) : "—"}</td>
+                <td className="px-3 py-2">{typeof r.amount === "number" ? fmtINR(r.amount) : "—"}</td>
+                <td className="px-3 py-2">{r.note ?? "—"}</td>
+              </tr>
+            ))}
+            {!history.isLoading && rows.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="px-3 py-8 text-center text-muted-foreground">
+                  No activity yet.
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export function AnalyticsWorkspace() {
   const [dark, setDark] = useState(true);
   const [chartSymbol, setChartSymbol] = useState(INDIAN_DEFAULT_CHART_SYMBOL);
@@ -695,12 +758,18 @@ export function AnalyticsWorkspace() {
             <TabsTrigger value="portfolios" className="gap-2">
               <Wallet className="h-4 w-4" /> Portfolios
             </TabsTrigger>
+            <TabsTrigger value="history" className="gap-2">
+              <RefreshCw className="h-4 w-4" /> History
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="dashboard">
             <DashboardTab dark={dark} chartSymbol={chartSymbol} setChartSymbol={setChartSymbol} />
           </TabsContent>
           <TabsContent value="portfolios">
             <PortfoliosTab dark={dark} />
+          </TabsContent>
+          <TabsContent value="history">
+            <HistoryTab />
           </TabsContent>
         </Tabs>
       </main>

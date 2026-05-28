@@ -189,6 +189,20 @@ export const getHoldingDetail = createServerFn({ method: "POST" })
 
 const portfolioIdInput = z.object({ portfolioId: z.string().min(1).max(64) });
 
+export const getSubscriberHistory = createServerFn({ method: "GET" }).handler(async () => {
+  requireSubscriber();
+  const sd = await readModelPortfolios();
+  const rows = sd.portfolios.flatMap((p) =>
+    (p.transactions ?? []).map((t) => ({
+      ...t,
+      portfolioId: p.id,
+      portfolioName: p.name,
+    })),
+  );
+  rows.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  return { rows: rows.slice(0, 300) };
+});
+
 export const getPortfoliosEnriched = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => portfolioIdInput.parse(d))
   .handler(async ({ data }) => {

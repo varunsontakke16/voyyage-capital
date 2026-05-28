@@ -7,6 +7,7 @@ export const modelPortfolios = pgTable("model_portfolios", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
+  initialCapital: doublePrecision("initial_capital"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

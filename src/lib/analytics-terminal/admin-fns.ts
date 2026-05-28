@@ -7,7 +7,7 @@ import {
   setAdminSessionCookie,
   verifyAdminPassword,
 } from "./admin-auth";
-import { getModelNotional, normalizePositions } from "./admin-portfolio-math";
+import { getModelNotional, normalizePositions, normalizeTransactions, positionsFromTransactions } from "./admin-portfolio-math";
 import { readModelPortfolios, writeModelPortfolios } from "./portfolio-store";
 import { analyticsSessionDataSchema, portfolioSchema } from "./portfolio-schema";
 import { getQuotesForSymbols } from "@/lib/market-data/service";
@@ -62,7 +62,13 @@ export const saveAdminPortfolios = createServerFn({ method: "POST" })
     requireAdmin();
     const portfolios = data.portfolios.map((p) => ({
       ...p,
-      positions: normalizePositions(p.positions),
+      transactions: p.transactions ? normalizeTransactions(p.transactions) : [],
+      initialCapital: typeof p.initialCapital === "number" ? Math.max(0, p.initialCapital) : undefined,
+      positions: (() => {
+        const txs = p.transactions ? normalizeTransactions(p.transactions) : [];
+        if (txs.length === 0) return normalizePositions(p.positions);
+        return positionsFromTransactions(txs, p.positions).positions;
+      })(),
     }));
     const next = analyticsSessionDataSchema.parse({ portfolios });
     await writeModelPortfolios(next);
