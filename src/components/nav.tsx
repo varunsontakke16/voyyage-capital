@@ -65,9 +65,6 @@ export function Nav() {
               </a>
             ),
           )}
-          <button className={`nav-link border ${dark ? "border-white/60 text-white" : "border-[#1A1A1A] text-[#1A1A1A]"} px-4 py-2 rounded-md`}>
-            Login
-          </button>
         </nav>
 
         <button
@@ -109,7 +106,6 @@ export function Nav() {
                 </a>
               ),
             )}
-            <button className="btn-ghost-light self-start">Login</button>
           </motion.div>
         )}
       </AnimatePresence>

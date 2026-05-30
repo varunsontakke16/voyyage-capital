@@ -12,9 +12,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Voyyage — Smart money runs on data" },
-      { name: "description", content: "Data-driven model portfolios for the modern Indian investor. SEBI registered quantitative research." },
+      { name: "description", content: "Data-driven quantitative research for the modern Indian investor. SEBI registered." },
       { property: "og:title", content: "Voyyage — Smart money runs on data" },
-      { property: "og:description", content: "Data-driven model portfolios for the modern Indian investor." },
+      { property: "og:description", content: "Data-driven quantitative research for the modern Indian investor." },
     ],
   }),
   component: Index,
