@@ -17,11 +17,11 @@ export function Hero() {
         </h1>
 
         <p className="mt-10 text-[18px] text-[var(--text-muted-dark)] max-w-[480px] mx-auto leading-relaxed">
-          Data-driven model portfolios for India&apos;s long-term wealth.
+          Data-driven quantitative research for India&apos;s long-term wealth.
         </p>
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#plans" className="btn-gold">Start Investing <ArrowRight size={16} /></a>
+          <a href="#start" className="btn-gold">Contact Us <ArrowRight size={16} /></a>
           <a href="#about" className="btn-ghost-light">Learn More <ArrowDown size={16} /></a>
         </div>
       </div>

@@ -15,7 +15,7 @@ const steps = [
   {
     n: "03",
     title: "Get Access and Start Investing Smarter",
-    body: "Once your payment is confirmed, your access details will be sent to you instantly via WhatsApp, SMS, and Email. Log in, explore the model portfolios, and let the data do the work.",
+    body: "Once your payment is confirmed, your access details will be sent to you instantly via WhatsApp, SMS, and Email. Log in, explore our research, and let the data do the work.",
   },
 ];
 
@@ -61,8 +61,8 @@ export function GetStarted() {
 
         <FadeUp>
           <div className="mt-24 text-center">
-            <a href="/#plans" className="btn-gold inline-flex items-center gap-2">
-              Start Your Journey Now <ArrowRight size={16} />
+            <a href="mailto:hello@voyyage.in" className="btn-gold inline-flex items-center gap-2">
+              Contact Us <ArrowRight size={16} />
             </a>
             <p className="mt-8 text-[13px] italic text-[#9CA3AF] max-w-xl mx-auto">
               Your name must match exactly with your PAN card for successful KYC verification. Please keep your Aadhaar-linked mobile number handy for the OTP.
