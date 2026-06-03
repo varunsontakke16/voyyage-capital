@@ -49,8 +49,8 @@ export function Nav() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
-        <Link to="/" className={`font-display text-[22px] tracking-tight ${wordmarkColor}`}>
-          Voyyage
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="Voyyage Logo" className="h-12 w-auto object-contain" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">

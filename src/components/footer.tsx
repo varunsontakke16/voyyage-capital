@@ -6,7 +6,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-24 pb-10">
         <div className="grid md:grid-cols-3 gap-12">
           <div>
-            <div className="font-display text-3xl">Voyyage</div>
+            <img src="/logo.png" alt="Voyyage Logo" className="h-14 w-auto object-contain" />
             <p className="mt-4 text-[var(--text-muted-dark)] text-sm leading-relaxed max-w-xs">
               Data-driven model portfolios for the modern Indian investor.
             </p>
