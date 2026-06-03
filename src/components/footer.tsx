@@ -8,7 +8,7 @@ export function Footer() {
           <div>
             <img src="/logo.png" alt="Voyyage Logo" className="h-14 w-auto object-contain" />
             <p className="mt-4 text-[var(--text-muted-dark)] text-sm leading-relaxed max-w-xs">
-              Data-driven model portfolios for the modern Indian investor.
+              Data-driven quantitative research for the modern Indian investor.
             </p>
             <p className="mt-6 text-xs text-[var(--text-muted-dark)] tracking-wider">
               SEBI Registered Research Analyst | Reg. No. INH000XXXXX
@@ -21,8 +21,6 @@ export function Footer() {
               {[
                 { label: "About", href: "/#about" },
                 { label: "Philosophy", href: "/#philosophy" },
-                { label: "Plans", href: "/#plans" },
-                { label: "Get Started", href: "/analytics" },
                 { label: "Privacy Policy", href: "#" },
                 { label: "Terms of Use", href: "#" },
               ].map((l) => (

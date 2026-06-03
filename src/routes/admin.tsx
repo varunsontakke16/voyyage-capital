@@ -1,16 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AdminPortfolioWorkspace } from "@/components/admin/AdminPortfolioWorkspace";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({
-    meta: [
-      { title: "Admin — Voyyage" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
-  }),
-  component: AdminPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/" });
+  },
+  component: () => null,
 });
-
-function AdminPage() {
-  return <AdminPortfolioWorkspace />;
-}
