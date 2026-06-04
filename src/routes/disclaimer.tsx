@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Nav } from '../components/nav'
 import { Footer } from '../components/footer'
+import { ArrowLeft } from 'lucide-react'
 
 export const Route = createFileRoute('/disclaimer')({
   component: Disclaimer,
@@ -12,6 +13,13 @@ function Disclaimer() {
       <Nav />
       <main className="pt-32 pb-24">
         <div className="max-w-4xl mx-auto px-6 md:px-10">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
+          >
+            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+            Back to Home
+          </Link>
           <h1 className="font-display text-4xl md:text-5xl mb-12 text-[#1A1A1A]">Disclaimer</h1>
           
           <div className="prose prose-slate max-w-none space-y-6 text-[#1A1A1A]">

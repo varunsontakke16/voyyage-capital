@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import {
@@ -18,7 +18,8 @@ import {
   Check,
   Mail,
   Phone,
-  Info
+  Info,
+  ArrowLeft
 } from "lucide-react";
 
 export const Route = createFileRoute("/disclosures")({
@@ -55,6 +56,13 @@ function DisclosuresPage() {
       {/* Hero Header */}
       <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
+          >
+            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+            Back to Home
+          </Link>
           <div className="eyebrow mb-4">SEBI Compliance</div>
           <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
             Standard Disclosures
