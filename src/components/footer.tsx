@@ -25,9 +25,10 @@ export function Footer() {
               {[
                 { label: "About", href: "/#about" },
                 { label: "Philosophy", href: "/#philosophy" },
-                { label: "Privacy Policy", href: "#" },
-                { label: "Terms of Use", href: "#" },
+                { label: "Privacy Policy", href: "/terms#privacy" },
+                { label: "Terms and Conditions", href: "/terms" },
                 { label: "Disclaimer", href: "/disclaimer" },
+                { label: "Disclosures", href: "/disclosures" },
                 { label: "Grievances Redressal", href: "/grievances" },
                 { label: "Investor Charter", href: "/investor-charter" },
               ].map((l) => (

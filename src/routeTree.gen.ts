@@ -9,14 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PortfoliosRouteImport } from './routes/portfolios'
 import { Route as InvestorCharterRouteImport } from './routes/investor-charter'
 import { Route as GrievancesRouteImport } from './routes/grievances'
+import { Route as DisclosuresRouteImport } from './routes/disclosures'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfoliosRoute = PortfoliosRouteImport.update({
   id: '/portfolios',
   path: '/portfolios',
@@ -30,6 +37,11 @@ const InvestorCharterRoute = InvestorCharterRouteImport.update({
 const GrievancesRoute = GrievancesRouteImport.update({
   id: '/grievances',
   path: '/grievances',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclosuresRoute = DisclosuresRouteImport.update({
+  id: '/disclosures',
+  path: '/disclosures',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -58,18 +70,22 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
   '/portfolios': typeof PortfoliosRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
   '/portfolios': typeof PortfoliosRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,9 +93,11 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/analytics': typeof AnalyticsRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
   '/portfolios': typeof PortfoliosRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,27 +106,33 @@ export interface FileRouteTypes {
     | '/admin'
     | '/analytics'
     | '/disclaimer'
+    | '/disclosures'
     | '/grievances'
     | '/investor-charter'
     | '/portfolios'
+    | '/terms'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/analytics'
     | '/disclaimer'
+    | '/disclosures'
     | '/grievances'
     | '/investor-charter'
     | '/portfolios'
+    | '/terms'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/analytics'
     | '/disclaimer'
+    | '/disclosures'
     | '/grievances'
     | '/investor-charter'
     | '/portfolios'
+    | '/terms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -116,13 +140,22 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AnalyticsRoute: typeof AnalyticsRoute
   DisclaimerRoute: typeof DisclaimerRoute
+  DisclosuresRoute: typeof DisclosuresRoute
   GrievancesRoute: typeof GrievancesRoute
   InvestorCharterRoute: typeof InvestorCharterRoute
   PortfoliosRoute: typeof PortfoliosRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolios': {
       id: '/portfolios'
       path: '/portfolios'
@@ -142,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/grievances'
       fullPath: '/grievances'
       preLoaderRoute: typeof GrievancesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclosures': {
+      id: '/disclosures'
+      path: '/disclosures'
+      fullPath: '/disclosures'
+      preLoaderRoute: typeof DisclosuresRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -180,9 +220,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AnalyticsRoute: AnalyticsRoute,
   DisclaimerRoute: DisclaimerRoute,
+  DisclosuresRoute: DisclosuresRoute,
   GrievancesRoute: GrievancesRoute,
   InvestorCharterRoute: InvestorCharterRoute,
   PortfoliosRoute: PortfoliosRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
