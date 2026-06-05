@@ -31,6 +31,7 @@ export function Footer() {
                 { label: "Disclosures", href: "/disclosures" },
                 { label: "Grievances Redressal", href: "/grievances" },
                 { label: "Investor Charter", href: "/investor-charter" },
+                { label: "Investor Grievance", href: "/investor-grievance" },
               ].map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="text-[var(--text-muted-dark)] hover:text-[var(--gold)] transition-colors">
