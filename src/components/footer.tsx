@@ -31,6 +31,7 @@ export function Footer() {
                 { label: "Disclosures", href: "/disclosures" },
                 { label: "Grievances Redressal", href: "/grievances" },
                 { label: "Investor Charter", href: "/investor-charter" },
+                { label: "Investor Grievance", href: "/investor-grievance" },
               ].map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="text-[var(--text-muted-dark)] hover:text-[var(--gold)] transition-colors">
@@ -43,8 +44,8 @@ export function Footer() {
 
           <div>
             <div className="eyebrow mb-6">Get in touch</div>
-            <a href="mailto:hello@voyyage.in" className="text-sm text-[var(--text-on-dark)] hover:text-[var(--gold)] transition-colors">
-              hello@voyyage.in
+            <a href="mailto:support@voyyageinvest.com" className="text-sm text-[var(--text-on-dark)] hover:text-[var(--gold)] transition-colors">
+              support@voyyageinvest.com
             </a>
             <div className="mt-6 flex gap-4">
               <a href="#" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">

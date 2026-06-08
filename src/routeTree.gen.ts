@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PortfoliosRouteImport } from './routes/portfolios'
+import { Route as InvestorGrievanceRouteImport } from './routes/investor-grievance'
 import { Route as InvestorCharterRouteImport } from './routes/investor-charter'
 import { Route as GrievancesRouteImport } from './routes/grievances'
 import { Route as DisclosuresRouteImport } from './routes/disclosures'
@@ -27,6 +28,11 @@ const TermsRoute = TermsRouteImport.update({
 const PortfoliosRoute = PortfoliosRouteImport.update({
   id: '/portfolios',
   path: '/portfolios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvestorGrievanceRoute = InvestorGrievanceRouteImport.update({
+  id: '/investor-grievance',
+  path: '/investor-grievance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestorCharterRoute = InvestorCharterRouteImport.update({
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
+  '/investor-grievance': typeof InvestorGrievanceRoute
   '/portfolios': typeof PortfoliosRoute
   '/terms': typeof TermsRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
+  '/investor-grievance': typeof InvestorGrievanceRoute
   '/portfolios': typeof PortfoliosRoute
   '/terms': typeof TermsRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/disclosures': typeof DisclosuresRoute
   '/grievances': typeof GrievancesRoute
   '/investor-charter': typeof InvestorCharterRoute
+  '/investor-grievance': typeof InvestorGrievanceRoute
   '/portfolios': typeof PortfoliosRoute
   '/terms': typeof TermsRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/disclosures'
     | '/grievances'
     | '/investor-charter'
+    | '/investor-grievance'
     | '/portfolios'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/disclosures'
     | '/grievances'
     | '/investor-charter'
+    | '/investor-grievance'
     | '/portfolios'
     | '/terms'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/disclosures'
     | '/grievances'
     | '/investor-charter'
+    | '/investor-grievance'
     | '/portfolios'
     | '/terms'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   DisclosuresRoute: typeof DisclosuresRoute
   GrievancesRoute: typeof GrievancesRoute
   InvestorCharterRoute: typeof InvestorCharterRoute
+  InvestorGrievanceRoute: typeof InvestorGrievanceRoute
   PortfoliosRoute: typeof PortfoliosRoute
   TermsRoute: typeof TermsRoute
 }
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/portfolios'
       fullPath: '/portfolios'
       preLoaderRoute: typeof PortfoliosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/investor-grievance': {
+      id: '/investor-grievance'
+      path: '/investor-grievance'
+      fullPath: '/investor-grievance'
+      preLoaderRoute: typeof InvestorGrievanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/investor-charter': {
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisclosuresRoute: DisclosuresRoute,
   GrievancesRoute: GrievancesRoute,
   InvestorCharterRoute: InvestorCharterRoute,
+  InvestorGrievanceRoute: InvestorGrievanceRoute,
   PortfoliosRoute: PortfoliosRoute,
   TermsRoute: TermsRoute,
 }

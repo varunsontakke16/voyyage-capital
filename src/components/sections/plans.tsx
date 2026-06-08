@@ -112,7 +112,7 @@ export function Plans() {
             </p>
             
             <div className="mt-12">
-              <a href="mailto:hello@voyyage.in" className="btn-gold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all">
+              <a href="mailto:support@voyyageinvest.com" className="btn-gold inline-flex items-center gap-2 shadow-lg hover:shadow-xl transition-all">
                 Contact Voyyage <ArrowRight size={16} />
               </a>
             </div>

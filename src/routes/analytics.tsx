@@ -23,7 +23,7 @@ function AnalyticsPage() {
             The Voyyage Terminal is currently under development. Get in touch with us to learn more.
           </p>
           <div className="mt-8">
-            <a href="mailto:hello@voyyage.in" className="btn-gold inline-flex items-center gap-2">
+            <a href="mailto:support@voyyageinvest.com" className="btn-gold inline-flex items-center gap-2">
               Contact Voyyage
             </a>
           </div>
