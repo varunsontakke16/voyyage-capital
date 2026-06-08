@@ -21,7 +21,7 @@ export function Hero() {
         </p>
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#start" className="btn-gold">Contact Us <ArrowRight size={16} /></a>
+          <a href="mailto:support@voyyageinvest.com" className="btn-gold">Contact Us <ArrowRight size={16} /></a>
           <a href="#about" className="btn-ghost-light">Learn More <ArrowDown size={16} /></a>
         </div>
       </div>

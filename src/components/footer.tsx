@@ -44,8 +44,8 @@ export function Footer() {
 
           <div>
             <div className="eyebrow mb-6">Get in touch</div>
-            <a href="mailto:hello@voyyage.in" className="text-sm text-[var(--text-on-dark)] hover:text-[var(--gold)] transition-colors">
-              hello@voyyage.in
+            <a href="mailto:support@voyyageinvest.com" className="text-sm text-[var(--text-on-dark)] hover:text-[var(--gold)] transition-colors">
+              support@voyyageinvest.com
             </a>
             <div className="mt-6 flex gap-4">
               <a href="#" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">

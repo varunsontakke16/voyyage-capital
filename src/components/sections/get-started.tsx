@@ -61,7 +61,7 @@ export function GetStarted() {
 
         <FadeUp>
           <div className="mt-24 text-center">
-            <a href="mailto:hello@voyyage.in" className="btn-gold inline-flex items-center gap-2">
+            <a href="mailto:support@voyyageinvest.com" className="btn-gold inline-flex items-center gap-2">
               Contact Us <ArrowRight size={16} />
             </a>
             <p className="mt-8 text-[13px] italic text-[#9CA3AF] max-w-xl mx-auto">
