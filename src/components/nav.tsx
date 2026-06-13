@@ -15,8 +15,7 @@ export function Nav() {
   const [overLight, setOverLight] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const isPortfolios = location.pathname.startsWith("/portfolios");
-  const isAnalytics = location.pathname.startsWith("/analytics");
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => {
@@ -24,12 +23,12 @@ export function Nav() {
       // detect light section beneath nav
       const el = document.elementFromPoint(window.innerWidth / 2, 40);
       const section = el?.closest("[data-section]") as HTMLElement | null;
-      setOverLight(section?.dataset.section === "light" || isPortfolios || isAnalytics);
+      setOverLight(section?.dataset.section === "light" || !isHome);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isPortfolios, isAnalytics]);
+  }, [isHome]);
 
   const dark = !overLight;
   const textColor = dark ? "text-[var(--text-on-dark)]" : "text-[#1A1A1A]";
@@ -49,8 +48,8 @@ export function Nav() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
-        <Link to="/" className={`font-display text-[22px] tracking-tight ${wordmarkColor}`}>
-          Voyyage
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="Voyyage Logo" className="h-12 w-auto object-contain" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">
@@ -65,9 +64,6 @@ export function Nav() {
               </a>
             ),
           )}
-          <button className={`nav-link border ${dark ? "border-white/60 text-white" : "border-[#1A1A1A] text-[#1A1A1A]"} px-4 py-2 rounded-md`}>
-            Login
-          </button>
         </nav>
 
         <button
@@ -109,7 +105,6 @@ export function Nav() {
                 </a>
               ),
             )}
-            <button className="btn-ghost-light self-start">Login</button>
           </motion.div>
         )}
       </AnimatePresence>

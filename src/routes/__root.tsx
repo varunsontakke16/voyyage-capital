@@ -73,15 +73,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Voyyage Capital" },
-      { name: "description", content: "Data-driven model portfolios for the modern Indian investor." },
+      { name: "description", content: "Data-driven quantitative research for the modern Indian investor." },
       { name: "author", content: "Voyyage" },
       { property: "og:title", content: "Voyyage Capital" },
-      { property: "og:description", content: "Data-driven model portfolios for the modern Indian investor." },
+      { property: "og:description", content: "Data-driven quantitative research for the modern Indian investor." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

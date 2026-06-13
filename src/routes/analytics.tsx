@@ -1,12 +1,8 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { checkSubscriberAccess } from "@/lib/analytics-terminal/analytics-fns";
-import { AnalyticsWorkspace } from "@/components/analytics/AnalyticsWorkspace";
+import { createFileRoute } from "@tanstack/react-router";
+import { Nav } from "@/components/nav";
+import { Footer } from "@/components/footer";
 
 export const Route = createFileRoute("/analytics")({
-  beforeLoad: async () => {
-    const access = await checkSubscriberAccess();
-    if (!access.ok) throw redirect({ href: "/#plans" });
-  },
   head: () => ({
     meta: [
       { title: "Terminal — Voyyage" },
@@ -17,5 +13,23 @@ export const Route = createFileRoute("/analytics")({
 });
 
 function AnalyticsPage() {
-  return <AnalyticsWorkspace />;
+  return (
+    <div className="bg-white min-h-screen flex flex-col">
+      <Nav />
+      <main className="flex-grow flex items-center justify-center mt-20">
+        <div className="text-center">
+          <h1 className="text-5xl font-display text-[var(--navy)] mb-4">Coming Soon</h1>
+          <p className="text-lg text-gray-600 max-w-md mx-auto">
+            The Voyyage Terminal is currently under development. Get in touch with us to learn more.
+          </p>
+          <div className="mt-8">
+            <a href="mailto:support@voyyageinvest.com" className="btn-gold inline-flex items-center gap-2">
+              Contact Voyyage
+            </a>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
 }
