@@ -34,7 +34,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fmtINR, fmtPct } from "@/lib/format-money";
-import { displaySymbol, INDIAN_DEFAULT_CHART_SYMBOL, quoteLastPrice } from "@/lib/market-data/india";
+import { displaySymbol, quoteLastPrice } from "@/lib/market-data/india";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 type ChartRange = "1D" | "1W" | "1M" | "1Y" | "MAX";
@@ -721,7 +721,7 @@ function HistoryTab() {
 
 export function AnalyticsWorkspace() {
   const [dark, setDark] = useState(true);
-  const [chartSymbol, setChartSymbol] = useState(INDIAN_DEFAULT_CHART_SYMBOL);
+  const [chartSymbol, setChartSymbol] = useState("^NSEI");
 
   const shellClass = useMemo(
     () =>

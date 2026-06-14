@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Nav } from "@/components/nav";
-import { Footer } from "@/components/footer";
+import { AnalyticsWorkspace } from "@/components/analytics/AnalyticsWorkspace";
+import { PaywallScreen } from "@/components/analytics/PaywallScreen";
+import { checkSubscriberAccess } from "@/lib/analytics-terminal/analytics-fns";
 
 export const Route = createFileRoute("/analytics")({
   head: () => ({
@@ -9,27 +10,19 @@ export const Route = createFileRoute("/analytics")({
       { name: "description", content: "Live NSE market terminal and model portfolios for Voyyage subscribers." },
     ],
   }),
+  loader: async () => {
+    const access = await checkSubscriberAccess();
+    return { access };
+  },
   component: AnalyticsPage,
 });
 
 function AnalyticsPage() {
-  return (
-    <div className="bg-white min-h-screen flex flex-col">
-      <Nav />
-      <main className="flex-grow flex items-center justify-center mt-20">
-        <div className="text-center">
-          <h1 className="text-5xl font-display text-[var(--navy)] mb-4">Coming Soon</h1>
-          <p className="text-lg text-gray-600 max-w-md mx-auto">
-            The Voyyage Terminal is currently under development. Get in touch with us to learn more.
-          </p>
-          <div className="mt-8">
-            <a href="mailto:support@voyyageinvest.com" className="btn-gold inline-flex items-center gap-2">
-              Contact Voyyage
-            </a>
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
+  const { access } = Route.useLoaderData();
+
+  if (!access.ok) {
+    return <PaywallScreen />;
+  }
+
+  return <AnalyticsWorkspace />;
 }
