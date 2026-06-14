@@ -82,13 +82,19 @@ export function Plans() {
 
                 <div className="mt-auto">
                   {portfolio.buttonStyle === "filled" ? (
-                    <button className="w-full bg-[#C19D68] hover:bg-[#a8885a] transition-colors text-white font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]">
+                    <a
+                      href="mailto:support@voyyageinvest.com?subject=Voyyager%20Subscription%20Enquiry"
+                      className="w-full bg-[#C19D68] hover:bg-[#a8885a] transition-colors text-white font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]"
+                    >
                       Get Started <ArrowRight size={16} />
-                    </button>
+                    </a>
                   ) : (
-                    <button className="w-full bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors text-gray-900 font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]">
+                    <a
+                      href="mailto:support@voyyageinvest.com?subject=Free%20Research%20Reports%20Enquiry"
+                      className="w-full bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors text-gray-900 font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]"
+                    >
                       Get Started <ArrowRight size={16} />
-                    </button>
+                    </a>
                   )}
                 </div>
               </div>
