@@ -10,5 +10,7 @@ import { nitro } from "nitro/vite";
 export default defineConfig({
   // Vercel deployment uses Nitro. Disable the Cloudflare Worker build plugin.
   cloudflare: false,
-  plugins: [nitro()],
+  // preset: "vercel" ensures Node.js serverless functions, not Vercel Edge.
+  // Node.js runtime is required for node:crypto (auth) and yahoo-finance2.
+  plugins: [nitro({ preset: "vercel" })],
 });
