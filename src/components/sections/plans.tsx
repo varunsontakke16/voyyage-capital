@@ -83,7 +83,9 @@ export function Plans() {
                 <div className="mt-auto">
                   {portfolio.buttonStyle === "filled" ? (
                     <a
-                      href="mailto:support@voyyageinvest.com?subject=Voyyager%20Subscription%20Enquiry"
+                      href="https://insightpier.com/analyst/varunsontakke/subscription/The%20Voyyage%20Vector%20Model"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full bg-[#C19D68] hover:bg-[#a8885a] transition-colors text-white font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]"
                     >
                       Get Started <ArrowRight size={16} />
