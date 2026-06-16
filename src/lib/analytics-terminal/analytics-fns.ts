@@ -17,10 +17,16 @@ import {
   rankIndianMovers,
 } from "@/lib/market-data/india";
 import { yahooSearch } from "@/lib/market-data/providers/yahoo";
-import { getBestQuote, getCandles, getQuotesForSymbols, type ChartRange } from "@/lib/market-data/service";
+import {
+  getBestQuote,
+  getCandles,
+  getQuotesForSymbols,
+  type ChartRange,
+} from "@/lib/market-data/service";
 import { enrichPortfolioEntity } from "./enrich-portfolio";
 import { readModelPortfolios } from "./portfolio-store";
-import { getSubscriberAccess, requireSubscriber } from "./subscriber";
+import { getSubscriberAccess, requireSubscriber, setPremiumAccessCookie } from "./subscriber";
+import { verifyTerminalLogin } from "./terminal-auth";
 
 function parseSymbolList(envName: string, fallback: string): string[] {
   const raw = process.env[envName] ?? fallback;
@@ -39,6 +45,26 @@ export const checkSubscriberAccess = createServerFn({ method: "GET" }).handler((
   return getSubscriberAccess();
 });
 
+const terminalLoginInput = z.object({
+  email: z.string().email().max(256),
+  password: z.string().min(1).max(256),
+});
+
+export const terminalLogin = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => terminalLoginInput.parse(d))
+  .handler(async ({ data }) => {
+    const result = await verifyTerminalLogin(data.email, data.password);
+    if (!result.ok) {
+      return { ok: false as const, reason: "invalid_credentials" as const };
+    }
+    try {
+      setPremiumAccessCookie(result.tier);
+    } catch {
+      return { ok: false as const, reason: "not_configured" as const };
+    }
+    return { ok: true as const };
+  });
+
 const dashboardInput = z.object({
   watchlist: z.array(z.string().max(32)).max(40).optional(),
 });
@@ -56,8 +82,12 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     const watchlist = [...new Set([...(data.watchlist ?? []), ...defaultWatch])].slice(0, 40);
 
     const sessionData = await readModelPortfolios();
-    const portfolioSymbols = sessionData.portfolios.flatMap((p) => p.positions.map((x) => x.symbol));
-    const quoteKeys = [...new Set([...indexSymbols, ...watchlist, ...sectorSymbols, ...portfolioSymbols])];
+    const portfolioSymbols = sessionData.portfolios.flatMap((p) =>
+      p.positions.map((x) => x.symbol),
+    );
+    const quoteKeys = [
+      ...new Set([...indexSymbols, ...watchlist, ...sectorSymbols, ...portfolioSymbols]),
+    ];
     const quotes = await getQuotesForSymbols(quoteKeys);
 
     let news: Awaited<ReturnType<typeof finnhubMarketNews>> = [];
@@ -248,5 +278,9 @@ export const exportPortfolioCsv = createServerFn({ method: "POST" })
         ].join(","),
       )
       .join("\n");
-    return { ok: true as const, filename: `portfolio-${data.portfolioId}.csv`, csv: `${header}\n${body}` };
+    return {
+      ok: true as const,
+      filename: `portfolio-${data.portfolioId}.csv`,
+      csv: `${header}\n${body}`,
+    };
   });
