@@ -11,10 +11,8 @@ import {
   Download,
   LineChart,
   Loader2,
-  Moon,
   RefreshCw,
   Search,
-  Sun,
   Wallet,
 } from "lucide-react";
 import {
@@ -739,9 +737,6 @@ export function AnalyticsWorkspace() {
             </Link>
             <span className="text-muted-foreground text-sm hidden sm:inline">Terminal</span>
           </div>
-          <Button type="button" size="icon" variant="outline" onClick={() => setDark((d) => !d)} aria-label="Toggle theme">
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
         </div>
       </header>
 
