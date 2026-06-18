@@ -78,50 +78,51 @@ export async function writeModelPortfolios(data: AnalyticsSessionData): Promise<
   const db = getDb();
   const now = new Date();
 
-  await db.transaction(async (tx) => {
-    await tx.delete(modelTransactions);
-    await tx.delete(modelPositions);
-    await tx.delete(modelPortfolios);
+  // Neon's HTTP driver does not support interactive (callback-style)
+  // transactions, so we run the statements sequentially. Order matters:
+  // delete children before parents, insert parents before children.
+  await db.delete(modelTransactions);
+  await db.delete(modelPositions);
+  await db.delete(modelPortfolios);
 
-    for (const portfolio of validated.portfolios) {
-      await tx.insert(modelPortfolios).values({
-        id: portfolio.id,
-        name: portfolio.name,
-        description: portfolio.description ?? null,
-        initialCapital: portfolio.initialCapital ?? null,
-        createdAt: now,
-        updatedAt: now,
-      });
+  for (const portfolio of validated.portfolios) {
+    await db.insert(modelPortfolios).values({
+      id: portfolio.id,
+      name: portfolio.name,
+      description: portfolio.description ?? null,
+      initialCapital: portfolio.initialCapital ?? null,
+      createdAt: now,
+      updatedAt: now,
+    });
 
-      if (portfolio.positions.length > 0) {
-        await tx.insert(modelPositions).values(
-          portfolio.positions.map((pos) => ({
-            portfolioId: portfolio.id,
-            symbol: pos.symbol,
-            qty: pos.qty,
-            avgCost: pos.avgCost,
-            targetWeightPct: pos.targetWeightPct ?? null,
-            openedAt: pos.openedAt ?? null,
-          })),
-        );
-      }
-
-      const txs = portfolio.transactions ?? [];
-      if (txs.length > 0) {
-        await tx.insert(modelTransactions).values(
-          txs.map((t) => ({
-            id: t.id,
-            portfolioId: portfolio.id,
-            symbol: t.symbol,
-            side: t.side,
-            qty: t.qty ?? null,
-            price: t.price ?? null,
-            amount: t.amount ?? null,
-            at: t.at,
-            note: t.note ?? null,
-          })),
-        );
-      }
+    if (portfolio.positions.length > 0) {
+      await db.insert(modelPositions).values(
+        portfolio.positions.map((pos) => ({
+          portfolioId: portfolio.id,
+          symbol: pos.symbol,
+          qty: pos.qty,
+          avgCost: pos.avgCost,
+          targetWeightPct: pos.targetWeightPct ?? null,
+          openedAt: pos.openedAt ?? null,
+        })),
+      );
     }
-  });
+
+    const txs = portfolio.transactions ?? [];
+    if (txs.length > 0) {
+      await db.insert(modelTransactions).values(
+        txs.map((t) => ({
+          id: t.id,
+          portfolioId: portfolio.id,
+          symbol: t.symbol,
+          side: t.side,
+          qty: t.qty ?? null,
+          price: t.price ?? null,
+          amount: t.amount ?? null,
+          at: t.at,
+          note: t.note ?? null,
+        })),
+      );
+    }
+  }
 }
