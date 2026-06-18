@@ -1,7 +1,8 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { getCookie } from "@tanstack/react-start/server";
+import { getCookie, setCookie } from "@tanstack/react-start/server";
 
 const COOKIE_NAME = "vv_premium_access";
+const DEFAULT_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
 export type SubscriberAccess = { ok: true; tier: string } | { ok: false; reason: string };
 
@@ -29,7 +30,8 @@ export function getSubscriberAccess(): SubscriberAccess {
     const expected = createHmac("sha256", secret).update(payloadB64).digest("base64url");
     const a = Buffer.from(expected);
     const b = Buffer.from(sig);
-    if (a.length !== b.length || !timingSafeEqual(a, b)) return { ok: false, reason: "bad_signature" };
+    if (a.length !== b.length || !timingSafeEqual(a, b))
+      return { ok: false, reason: "bad_signature" };
     const payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf8")) as {
       tier?: string;
       exp?: number;
@@ -46,4 +48,25 @@ export function getSubscriberAccess(): SubscriberAccess {
 export function requireSubscriber(): void {
   const a = getSubscriberAccess();
   if (!a.ok) throw new Error(`ANALYTICS_FORBIDDEN:${a.reason}`);
+}
+
+/**
+ * Issue a signed premium-access cookie (the same format `getSubscriberAccess`
+ * verifies). Called after a successful terminal login.
+ */
+export function setPremiumAccessCookie(tier = "voyyager", ttlSeconds = DEFAULT_TTL_SECONDS): void {
+  const secret = process.env.PREMIUM_ACCESS_SECRET;
+  if (!secret || secret.length < 16) {
+    throw new Error("PREMIUM_ACCESS_SECRET not configured");
+  }
+  const payload = { tier, exp: Math.floor(Date.now() / 1000) + ttlSeconds };
+  const payloadB64 = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+  const sig = createHmac("sha256", secret).update(payloadB64).digest("base64url");
+  setCookie(COOKIE_NAME, `${payloadB64}.${sig}`, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: ttlSeconds,
+    secure: process.env.NODE_ENV === "production",
+  });
 }

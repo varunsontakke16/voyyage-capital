@@ -1,9 +1,22 @@
 import { relations } from "drizzle-orm";
-import { boolean, doublePrecision, pgEnum, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  doublePrecision,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 
 export const transactionSideEnum = pgEnum("transaction_side", ["buy", "sell", "dividend"]);
 export const planTierEnum = pgEnum("plan_tier", ["beginner", "voyyager"]);
-export const paymentStatusEnum = pgEnum("payment_status", ["pending", "active", "expired", "cancelled"]);
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "pending",
+  "active",
+  "expired",
+  "cancelled",
+]);
 
 // ---------------------------------------------------------------------------
 // Model portfolios (managed via /admin)
@@ -58,6 +71,20 @@ export const subscribers = pgTable("subscribers", {
   subscriptionStart: timestamp("subscription_start", { withTimezone: true }),
   subscriptionEnd: timestamp("subscription_end", { withTimezone: true }),
   paymentStatus: paymentStatusEnum("payment_status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// ---------------------------------------------------------------------------
+// Terminal login credentials (gate access to /analytics terminal)
+// ---------------------------------------------------------------------------
+
+export const terminalCredentials = pgTable("terminal_credentials", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  // scrypt hash stored as `salt:hash` (both hex)
+  passwordHash: text("password_hash").notNull(),
+  tier: text("tier").notNull().default("voyyager"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
