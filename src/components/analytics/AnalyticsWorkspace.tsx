@@ -174,10 +174,32 @@ function DashboardTab({
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-end gap-3">
+        <span className="text-xs text-muted-foreground">
+          Updated {dash.data?.fetchedAt ? new Date(dash.data.fetchedAt).toLocaleTimeString() : "—"}
+        </span>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="gap-1.5"
+          onClick={() => dash.refetch()}
+          disabled={dash.isFetching}
+        >
+          <RefreshCw className={`h-4 w-4 ${dash.isFetching ? "animate-spin" : ""}`} /> Refresh
+        </Button>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-4">
         <div className="rounded-lg border border-border bg-card/40 p-4">
           <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Portfolio value</div>
           <div className="mt-2 font-display text-3xl font-light">{summary ? fmtINR(summary.totalValue) : "—"}</div>
+          <div className="text-xs text-muted-foreground mt-1">Market value of holdings</div>
+        </div>
+        <div className="rounded-lg border border-border bg-card/40 p-4">
+          <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Cash</div>
+          <div className="mt-2 font-display text-3xl font-light">{summary ? fmtINR(summary.cash) : "—"}</div>
+          <div className="text-xs text-muted-foreground mt-1">Uninvested cash inventory</div>
         </div>
         <div className="rounded-lg border border-border bg-card/40 p-4">
           <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Unrealized P&amp;L</div>
@@ -189,21 +211,13 @@ function DashboardTab({
           <div className="text-xs text-muted-foreground mt-1">{summary ? fmtPct(summary.unrealizedPct) : ""}</div>
         </div>
         <div className="rounded-lg border border-border bg-card/40 p-4">
-          <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Day P&amp;L (est.)</div>
+          <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Realized P&amp;L</div>
           <div
-            className={`mt-2 font-display text-3xl font-light ${summary && summary.dayPnlEstimate < 0 ? "text-rose-400" : "text-emerald-400"}`}
+            className={`mt-2 font-display text-3xl font-light ${summary && summary.realizedPnl < 0 ? "text-rose-400" : "text-emerald-400"}`}
           >
-            {summary ? fmtINR(summary.dayPnlEstimate) : "—"}
+            {summary ? fmtINR(summary.realizedPnl) : "—"}
           </div>
-        </div>
-        <div className="rounded-lg border border-border bg-card/40 p-4">
-          <div className="text-[11px] uppercase tracking-widest text-muted-foreground">Last refresh</div>
-          <div className="mt-2 text-sm text-muted-foreground">
-            {dash.data?.fetchedAt ? new Date(dash.data.fetchedAt).toLocaleTimeString() : "—"}
-          </div>
-          <Button type="button" variant="outline" size="sm" className="mt-3" onClick={() => dash.refetch()}>
-            Refresh now
-          </Button>
+          <div className="text-xs text-muted-foreground mt-1">Booked gains from sells &amp; dividends</div>
         </div>
       </div>
 
@@ -429,9 +443,13 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
   };
 
   const rowsRaw = enriched.data?.ok ? enriched.data.portfolio.rows : [];
-  const realizedLedger =
-    enriched.data?.ok && "realizedPnlFromLedger" in enriched.data.portfolio
-      ? (enriched.data.portfolio as { realizedPnlFromLedger?: number }).realizedPnlFromLedger ?? 0
+  const realizedPnl =
+    enriched.data?.ok && "realizedPnl" in enriched.data.portfolio
+      ? (enriched.data.portfolio as { realizedPnl?: number }).realizedPnl ?? 0
+      : 0;
+  const cash =
+    enriched.data?.ok && "cash" in enriched.data.portfolio
+      ? (enriched.data.portfolio as { cash?: number }).cash ?? 0
       : 0;
 
   const rows = useMemo(() => {
@@ -471,11 +489,16 @@ function PortfoliosTab({ dark }: { dark: boolean }) {
       ) : null}
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
           {enriched.data?.ok ? (
             <>
-              Realized (from ledger):{" "}
-              <span className={realizedLedger >= 0 ? "text-emerald-400" : "text-rose-400"}>{fmtINR(realizedLedger)}</span>
+              <span>
+                Cash: <span className="text-foreground">{fmtINR(cash)}</span>
+              </span>
+              <span>
+                Realized P&amp;L:{" "}
+                <span className={realizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"}>{fmtINR(realizedPnl)}</span>
+              </span>
             </>
           ) : null}
         </div>
