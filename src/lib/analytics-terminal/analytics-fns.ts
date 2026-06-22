@@ -23,6 +23,7 @@ import {
   getQuotesForSymbols,
   type ChartRange,
 } from "@/lib/market-data/service";
+import { computePortfolioCashRealized } from "./admin-portfolio-math";
 import { enrichPortfolioEntity } from "./enrich-portfolio";
 import { readModelPortfolios } from "./portfolio-store";
 import { getSubscriberAccess, requireSubscriber, setPremiumAccessCookie } from "./subscriber";
@@ -105,12 +106,17 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
     const pq = quotes;
     let totalValue = 0;
     let totalCost = 0;
+    let totalCash = 0;
+    let realizedPnl = 0;
     for (const port of sessionData.portfolios) {
       for (const pos of port.positions) {
         const px = quoteLastPrice(pq[pos.symbol]) ?? 0;
         totalValue += px * pos.qty;
         totalCost += pos.avgCost * pos.qty;
       }
+      const { cash, realized } = computePortfolioCashRealized(port);
+      totalCash += cash;
+      realizedPnl += realized;
     }
 
     let dayPnlFromQuotes = 0;
@@ -152,8 +158,10 @@ export const getDashboardBundle = createServerFn({ method: "POST" })
       portfolioSummary: {
         totalValue,
         totalCost,
+        cash: totalCash,
         unrealizedPnl: totalValue - totalCost,
         unrealizedPct: totalCost > 0 ? ((totalValue - totalCost) / totalCost) * 100 : 0,
+        realizedPnl,
         dayPnlEstimate: dayPnlFromQuotes,
       },
     };
