@@ -1,41 +1,38 @@
-import { scrypt, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
-import { eq } from "drizzle-orm";
-import { getDb } from "@/lib/db";
-import { terminalCredentials } from "@/lib/db/schema";
+import { timingSafeEqual } from "node:crypto";
 
-const scryptAsync = promisify(scrypt);
+/**
+ * Shared terminal password. Every Voyyager logs in with their own email plus
+ * this one common password (sent to subscribers manually). Override in any
+ * environment by setting `TERMINAL_SHARED_PASSWORD`; otherwise this generated
+ * default is used so the terminal works without extra configuration.
+ */
+const DEFAULT_SHARED_PASSWORD = "Vector-Compass-9464";
 
-/** Verify a stored `salt:hash` (hex) scrypt digest against a plaintext password. */
-async function verifyScrypt(password: string, stored: string): Promise<boolean> {
-  const [salt, hashHex] = stored.split(":");
-  if (!salt || !hashHex) return false;
-  const expected = Buffer.from(hashHex, "hex");
-  const derived = (await scryptAsync(password, salt, expected.length)) as Buffer;
-  if (expected.length !== derived.length) return false;
-  return timingSafeEqual(expected, derived);
+function getSharedPassword(): string {
+  const fromEnv = process.env.TERMINAL_SHARED_PASSWORD?.trim();
+  return fromEnv && fromEnv.length > 0 ? fromEnv : DEFAULT_SHARED_PASSWORD;
+}
+
+/** Constant-time string comparison that doesn't leak length via early return. */
+function safeEqual(a: string, b: string): boolean {
+  const ab = Buffer.from(a, "utf8");
+  const bb = Buffer.from(b, "utf8");
+  if (ab.length !== bb.length) return false;
+  return timingSafeEqual(ab, bb);
 }
 
 export type TerminalLoginResult = { ok: true; tier: string } | { ok: false };
 
 /**
- * Look up a terminal credential by email and verify the password.
- * Returns the granted tier on success.
+ * Verify a terminal login: any valid email is accepted as long as the password
+ * matches the shared terminal password. Returns the granted tier on success.
  */
 export async function verifyTerminalLogin(
   email: string,
   password: string,
 ): Promise<TerminalLoginResult> {
   const normalizedEmail = email.trim().toLowerCase();
-  const db = getDb();
-  const rows = await db
-    .select()
-    .from(terminalCredentials)
-    .where(eq(terminalCredentials.email, normalizedEmail))
-    .limit(1);
-  const cred = rows[0];
-  if (!cred) return { ok: false };
-  const valid = await verifyScrypt(password, cred.passwordHash);
-  if (!valid) return { ok: false };
-  return { ok: true, tier: cred.tier };
+  if (!normalizedEmail) return { ok: false };
+  if (!safeEqual(password, getSharedPassword())) return { ok: false };
+  return { ok: true, tier: "voyyager" };
 }
