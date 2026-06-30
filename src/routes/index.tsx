@@ -11,9 +11,9 @@ import { FAQ } from "@/components/sections/faq";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Voyyage — Smart money runs on data" },
+      { title: "Voyyage, Smart money runs on data" },
       { name: "description", content: "Data-driven quantitative research for the modern Indian investor. SEBI registered." },
-      { property: "og:title", content: "Voyyage — Smart money runs on data" },
+      { property: "og:title", content: "Voyyage, Smart money runs on data" },
       { property: "og:description", content: "Data-driven quantitative research for the modern Indian investor." },
     ],
   }),

@@ -25,9 +25,9 @@ import {
 export const Route = createFileRoute("/disclosures")({
   head: () => ({
     meta: [
-      { title: "Standard Disclosures — Voyyage" },
+      { title: "Standard Disclosures, Voyyage" },
       { name: "description", content: "Standard disclosures of Varun Rajesh Sontakke, SEBI Registered Research Analyst. Learn about our qualifications, business activities, and conflict policies." },
-      { property: "og:title", content: "Standard Disclosures — Voyyage" },
+      { property: "og:title", content: "Standard Disclosures, Voyyage" },
       { property: "og:description", content: "Standard disclosures of Varun Rajesh Sontakke, SEBI Registered Research Analyst." },
     ],
   }),

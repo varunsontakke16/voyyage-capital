@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "Can I use your research with my existing broker or app?",
-    a: "Yes, completely. You do not need to switch anything. We give you the stock names, buy zones, and weightages. You simply place the orders on whichever platform you already use — whether that is Zerodha, Groww, Angel One, or anything else. We do the research. You stay in control.",
+    a: "Yes, completely. You do not need to switch anything. We give you the stock names, buy zones, and weightages. You simply place the orders on whichever platform you already use, whether that is Zerodha, Groww, Angel One, or anything else. We do the research. You stay in control.",
   },
 ];
 

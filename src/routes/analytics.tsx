@@ -7,7 +7,7 @@ import { checkSubscriberAccess } from "@/lib/analytics-terminal/analytics-fns";
 export const Route = createFileRoute("/analytics")({
   head: () => ({
     meta: [
-      { title: "Terminal — Voyyage" },
+      { title: "Terminal, Voyyage" },
       {
         name: "description",
         content: "Live NSE market terminal and model portfolios for Voyyage subscribers.",

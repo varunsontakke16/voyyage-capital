@@ -23,9 +23,9 @@ import {
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms and Conditions — Voyyage" },
+      { title: "Terms and Conditions, Voyyage" },
       { name: "description", content: "Terms of Service and Privacy Policy for Voyyage Capital. Learn about our website usage license, regulatory disclaimers, and cookies policy." },
-      { property: "og:title", content: "Terms and Conditions — Voyyage" },
+      { property: "og:title", content: "Terms and Conditions, Voyyage" },
       { property: "og:description", content: "Terms of Service and Privacy Policy for Voyyage Capital." },
     ],
   }),
