@@ -17,9 +17,9 @@ import {
 export const Route = createFileRoute("/investor-grievance")({
   head: () => ({
     meta: [
-      { title: "Investor Grievance — Voyyage" },
+      { title: "Investor Grievance, Voyyage" },
       { name: "description", content: "SEBI Annexure B Investor Grievance data and complaint trends for Voyyage Capital. Real-time updated." },
-      { property: "og:title", content: "Investor Grievance — Voyyage" },
+      { property: "og:title", content: "Investor Grievance, Voyyage" },
       { property: "og:description", content: "SEBI Annexure B Investor Grievance data and complaint trends." },
     ],
   }),

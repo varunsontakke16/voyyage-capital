@@ -31,9 +31,9 @@ import {
 export const Route = createFileRoute("/investor-charter")({
   head: () => ({
     meta: [
-      { title: "Investor Charter — Voyyage" },
+      { title: "Investor Charter, Voyyage" },
       { name: "description", content: "SEBI Investor Charter for Research Analysts (RAs). Learn about investor rights, responsibilities, and grievance redressal." },
-      { property: "og:title", content: "Investor Charter — Voyyage" },
+      { property: "og:title", content: "Investor Charter, Voyyage" },
       { property: "og:description", content: "SEBI Investor Charter for Research Analysts (RAs)." },
     ],
   }),
@@ -301,8 +301,8 @@ function InvestorCharterPage() {
                         If the complaint is not resolved, you may escalate to SEBI's centralized grievance redressal platform SCORES. A two-level review process is followed:
                       </p>
                       <ol className="list-decimal pl-4 mt-2 text-xs text-gray-500 space-y-1">
-                        <li>First Review — Designated Body (RAASB - Research Analyst Administration and Supervisory Body)</li>
-                        <li>Second Review — SEBI</li>
+                        <li>First Review: Designated Body (RAASB - Research Analyst Administration and Supervisory Body)</li>
+                        <li>Second Review: SEBI</li>
                       </ol>
                     </div>
                     
