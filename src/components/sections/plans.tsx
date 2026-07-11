@@ -92,7 +92,9 @@ export function Plans() {
                     </a>
                   ) : (
                     <a
-                      href="mailto:support@voyyageinvest.com?subject=Free%20Research%20Reports%20Enquiry"
+                      href="https://drive.google.com/drive/folders/1bokIcUJJgKZJHggDWK-s56gNQrmW1kiD"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors text-gray-900 font-bold py-3.5 px-4 flex items-center justify-center gap-2 text-[13px] uppercase tracking-wider rounded-[4px]"
                     >
                       Get Started <ArrowRight size={16} />

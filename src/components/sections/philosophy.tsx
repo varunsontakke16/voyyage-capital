@@ -7,7 +7,7 @@ const pillars = [
   },
   {
     title: "Catalyst",
-    body: "Price does not move without a reason. We identify stocks with clear, data-backed growth triggers — whether that is an earnings inflection, a sector tailwind, an order book expansion, or a structural shift in the business.",
+    body: "Price does not move without a reason. We identify stocks with clear, data-backed growth triggers, whether that is an earnings inflection, a sector tailwind, an order book expansion, or a structural shift in the business.",
   },
   {
     title: "Entry Point",

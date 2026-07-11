@@ -215,7 +215,7 @@ function AdminEditor() {
       await saveAdminPortfolios({ data: { portfolios } });
       setData({ portfolios });
       setDirty(false);
-      setStatus("Saved — subscribers will see updates on the Terminal.");
+      setStatus("Saved; subscribers will see updates on the Terminal.");
     } catch {
       setError("Could not save. Check your connection and try again.");
     } finally {
@@ -463,7 +463,7 @@ function AdminEditor() {
           <h1 className="font-display text-3xl font-light">Model portfolios</h1>
           <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             Define allocation, quantities, and cost basis for each model book. Subscribers see live marks on the
-            Terminal — you control the model only.
+            Terminal; you control the model only.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -489,10 +489,10 @@ function AdminEditor() {
           <CardTitle className="text-base font-medium">How model books work</CardTitle>
           <CardDescription className="text-sm leading-relaxed">
             Each row is a holding: NSE symbol, quantity, and average cost (INR). Target weight drives suggested
-            quantity against a {fmtINR(modelNotional, { maximumFractionDigits: 0 })} reference book — adjust qty or
+            quantity against a {fmtINR(modelNotional, { maximumFractionDigits: 0 })} reference book; adjust qty or
             weight; aim for weights near 100%. Set the book&apos;s <strong>initial capital</strong> and the Book
             summary below shows the live cash, unrealised and realised P&amp;L exactly as subscribers see them on the
-            Terminal — cash is initial capital minus the cost of holdings plus realised gains.
+            Terminal; cash is initial capital minus the cost of holdings plus realised gains.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -883,7 +883,7 @@ function AdminEditor() {
           <DialogHeader>
             <DialogTitle>New model portfolio</DialogTitle>
             <DialogDescription>
-              e.g. Voyyage Core, Voyyage Momentum — a separate book for subscribers.
+              e.g. Voyyage Core, Voyyage Momentum; a separate book for subscribers.
             </DialogDescription>
           </DialogHeader>
           <div>
