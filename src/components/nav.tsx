@@ -67,7 +67,7 @@ export function Nav() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="rounded-[4px] bg-[#c9a96e] px-5 py-2.5 text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#b8945c]"
+                className="rounded-[4px] bg-[#c9a96e] px-5 py-2.5 text-[13px] font-bold uppercase tracking-wider text-[var(--navy)] transition-colors hover:bg-[#b8945c]"
               >
                 {l.label}
               </Link>

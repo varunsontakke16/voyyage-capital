@@ -53,36 +53,37 @@ function DisclosuresPage() {
     <div className="min-h-screen bg-[var(--background)]">
       <Nav />
 
-      {/* Hero Header */}
-      <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
-          >
-            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
-            Back to Home
-          </Link>
-          <div className="eyebrow mb-4">SEBI Compliance</div>
-          <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
-            Standard Disclosures
-          </h1>
-          <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
-            Regulatory disclosures in accordance with the SEBI (Research Analysts) Regulations, 2014.
-          </p>
-        </div>
-      </section>
+      <main>
+        {/* Hero Header */}
+        <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+              Back to Home
+            </Link>
+            <div className="eyebrow-ink mb-4">SEBI Compliance</div>
+            <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
+              Standard Disclosures
+            </h1>
+            <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
+              Regulatory disclosures in accordance with the SEBI (Research Analysts) Regulations, 2014.
+            </p>
+          </div>
+        </section>
 
-      {/* Main Layout */}
-      <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        {/* Main Layout */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           
           {/* Sticky Table of Contents Sidebar (Desktop only) */}
           <aside className="hidden lg:block lg:col-span-1">
             <div className="sticky top-28 self-start bg-white p-6 rounded-lg border border-[var(--gold)]/10 shadow-sm">
-              <h3 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
+              <h2 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
                 Sections
-              </h3>
+              </h2>
               <ul className="space-y-3">
                 {sections.map((sec) => (
                   <li key={sec.id}>
@@ -126,7 +127,7 @@ function DisclosuresPage() {
                   <div className="bg-[var(--snow)] p-4 rounded-lg border border-[var(--gold)]/20 shrink-0 text-center md:text-left">
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-mono">SEBI Registration</span>
                     <p className="text-sm font-mono font-bold text-[var(--navy)] mt-1">INH000026053</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5">Granted: 13-Apr-2026</p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">Granted: 13-Apr-2026</p>
                   </div>
                 </div>
 
@@ -176,7 +177,7 @@ function DisclosuresPage() {
                     <div className="w-8 h-8 rounded-full bg-[var(--gold)]/10 text-[var(--gold)] flex items-center justify-center mb-3">
                       <GraduationCap size={16} />
                     </div>
-                    <h4 className="text-xs font-semibold text-[var(--navy)]">MBA (Finance)</h4>
+                    <h3 className="text-xs font-semibold text-[var(--navy)]">MBA (Finance)</h3>
                     <p className="text-[10px] text-gray-500 mt-1">Master&apos;s Degree in Business Administration</p>
                   </div>
                   
@@ -184,7 +185,7 @@ function DisclosuresPage() {
                     <div className="w-8 h-8 rounded-full bg-[var(--navy)]/10 text-[var(--navy)] flex items-center justify-center mb-3">
                       <ShieldCheck size={16} />
                     </div>
-                    <h4 className="text-xs font-semibold text-[var(--navy)]">NISM XV Certified</h4>
+                    <h3 className="text-xs font-semibold text-[var(--navy)]">NISM XV Certified</h3>
                     <p className="text-[10px] text-gray-500 mt-1">Research Analyst Certification</p>
                   </div>
 
@@ -192,13 +193,13 @@ function DisclosuresPage() {
                     <div className="w-8 h-8 rounded-full bg-[var(--gold)]/10 text-[var(--gold)] flex items-center justify-center mb-3">
                       <Check size={16} strokeWidth={3} />
                     </div>
-                    <h4 className="text-xs font-semibold text-[var(--navy)]">CFA Level I Cleared</h4>
+                    <h3 className="text-xs font-semibold text-[var(--navy)]">CFA Level I Cleared</h3>
                     <p className="text-[10px] text-gray-500 mt-1">Chartered Financial Analyst</p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-gray-100 space-y-3">
-                  <h4 className="text-sm font-semibold text-[var(--navy)]">Investment Framework</h4>
+                  <h3 className="text-sm font-semibold text-[var(--navy)]">Investment Framework</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">
                     Possesses a strong analytical and data-driven approach to investing, with expertise in identifying investment opportunities and designing structured portfolio strategies. His investment framework integrates:
                   </p>
@@ -228,7 +229,7 @@ function DisclosuresPage() {
                 </p>
 
                 <div className="bg-[var(--snow)] p-6 rounded-lg border border-gray-100">
-                  <h4 className="text-xs font-semibold text-[var(--navy)] uppercase tracking-wider mb-3">Dissemination Channels</h4>
+                  <h3 className="text-xs font-semibold text-[var(--navy)] uppercase tracking-wider mb-3">Dissemination Channels</h3>
                   <p className="text-xs text-gray-600 leading-relaxed mb-4">
                     Research calls and reports may be shared through platforms such as Telegram, WhatsApp, and Instagram for free subscribers, if any.
                   </p>
@@ -252,7 +253,7 @@ function DisclosuresPage() {
                   <ShieldCheck size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-emerald-900">Clean Regulatory Record</h4>
+                  <h3 className="text-sm font-semibold text-emerald-900">Clean Regulatory Record</h3>
                   <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
                     There are <strong>no outstanding litigations</strong> or <strong>disciplinary actions</strong> against Varun Rajesh Sontakke.
                   </p>
@@ -328,20 +329,20 @@ function DisclosuresPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="border border-gray-100 p-5 rounded-lg space-y-2">
-                    <h4 className="text-xs font-semibold text-[var(--navy)] flex items-center gap-2">
+                    <h3 className="text-xs font-semibold text-[var(--navy)] flex items-center gap-2">
                       <Users size={14} className="text-[var(--gold)]" />
                       Affiliation
-                    </h4>
+                    </h3>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Varun Rajesh Sontakke and/or associates are <strong>not affiliated</strong> with any other intermediaries.
                     </p>
                   </div>
 
                   <div className="border border-gray-100 p-5 rounded-lg space-y-2">
-                    <h4 className="text-xs font-semibold text-[var(--navy)] flex items-center gap-2">
+                    <h3 className="text-xs font-semibold text-[var(--navy)] flex items-center gap-2">
                       <DollarSign size={14} className="text-[var(--gold)]" />
                       Third-Party Compensation
-                    </h4>
+                    </h3>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Varun Rajesh Sontakke and/or associates have <strong>not received any brokerage or commission</strong> from any third party.
                     </p>
@@ -363,7 +364,7 @@ function DisclosuresPage() {
                   <BriefcaseBusiness size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-[var(--navy)]">Twelve-Month Compensation Disclosure</h4>
+                  <h3 className="text-sm font-semibold text-[var(--navy)]">Twelve-Month Compensation Disclosure</h3>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                     Varun Rajesh Sontakke and/or associates have <strong>not received any compensation</strong> from the company covered by the Research Analyst during the preceding twelve months.
                   </p>
@@ -384,7 +385,7 @@ function DisclosuresPage() {
                   <Scale size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-[var(--navy)]">Public Issue Underwriting & Management</h4>
+                  <h3 className="text-sm font-semibold text-[var(--navy)]">Public Issue Underwriting & Management</h3>
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                     Varun Rajesh Sontakke and/or associates have <strong>not managed or co-managed any public offering of securities</strong> of the company during the preceding twelve months.
                   </p>
@@ -407,14 +408,14 @@ function DisclosuresPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-[var(--snow)] p-5 rounded-lg border border-gray-100 space-y-1">
-                    <h4 className="text-xs font-semibold text-[var(--navy)]">Employment Status</h4>
+                    <h3 className="text-xs font-semibold text-[var(--navy)]">Employment Status</h3>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Varun Rajesh Sontakke and/or associates have <strong>not served as an officer, director, or employee</strong> of the company.
                     </p>
                   </div>
                   
                   <div className="bg-[var(--snow)] p-5 rounded-lg border border-gray-100 space-y-1">
-                    <h4 className="text-xs font-semibold text-[var(--navy)]">Market-Making Activities</h4>
+                    <h3 className="text-xs font-semibold text-[var(--navy)]">Market-Making Activities</h3>
                     <p className="text-xs text-gray-500 leading-relaxed">
                       Varun Rajesh Sontakke and/or associates have <strong>not engaged in any market-making activities</strong> related to the company.
                     </p>
@@ -457,6 +458,7 @@ function DisclosuresPage() {
               </div>
             </section>
 
+          </div>
           </div>
         </div>
       </main>

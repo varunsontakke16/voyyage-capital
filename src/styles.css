@@ -46,6 +46,10 @@
   --navy: oklch(0.214 0.034 254);
   --midnight: oklch(0.282 0.052 263);
   --gold: oklch(0.736 0.082 80);
+  /* Darker gold for text on light backgrounds (>=4.5:1 for WCAG 2.2 AA).
+     The bright --gold fails contrast as text on white/snow (~2.3:1); use this
+     for text/labels on light surfaces while keeping --gold for accents/icons/dark bgs. */
+  --gold-ink: #8a6a2e;
   --text-on-dark: oklch(0.975 0.002 247);
   --text-muted-dark: oklch(0.694 0.028 247);
   --text-muted-light: oklch(0.523 0.012 247);
@@ -106,6 +110,17 @@
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* Same as .eyebrow but uses the darker gold so the label meets WCAG AA
+     contrast when placed on light (white/snow) backgrounds. */
+  .eyebrow-ink {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold-ink);
     font-weight: 500;
   }
 
