@@ -48,11 +48,11 @@ export function Footer() {
               support@voyyageinvest.com
             </a>
             <div className="mt-6 flex gap-4">
-              <a href="#" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">
-                <Linkedin size={16} />
+              <a href="#" aria-label="Voyyage on LinkedIn" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">
+                <Linkedin size={16} aria-hidden="true" />
               </a>
-              <a href="#" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">
-                <Twitter size={16} />
+              <a href="#" aria-label="Voyyage on X (Twitter)" className="w-10 h-10 border border-white/20 rounded-md flex items-center justify-center hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors">
+                <Twitter size={16} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -72,10 +72,10 @@ export function Footer() {
           </div>
           
           <div className="text-center space-y-3 pt-6 border-t border-[var(--gold)]/10">
-            <p className="text-xs text-[#475569] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xs text-[var(--text-muted-dark)] max-w-3xl mx-auto leading-relaxed">
               Investments are subject to market risks. Please read all scheme-related documents carefully before investing. Past performance is not indicative of future results.
             </p>
-            <p className="text-xs text-[#475569]">© {new Date().getFullYear()} Voyyage. All rights reserved.</p>
+            <p className="text-xs text-[var(--text-muted-dark)]">© {new Date().getFullYear()} Voyyage. All rights reserved.</p>
           </div>
         </div>
       </div>

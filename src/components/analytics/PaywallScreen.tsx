@@ -49,7 +49,7 @@ function TerminalLogin() {
 
   return (
     <div className="w-full max-w-sm rounded-lg border border-border bg-card/30 p-7">
-      <div className="text-[11px] uppercase tracking-widest text-gold mb-2">Subscriber Login</div>
+      <div className="text-[11px] uppercase tracking-widest text-[var(--gold-ink)] mb-2">Subscriber Login</div>
       <h2 className="font-display text-2xl font-light mb-1">Access the Terminal</h2>
       <p className="text-xs text-muted-foreground mb-6">
         Already a Voyyager? Sign in to open the live terminal.
@@ -87,7 +87,7 @@ function TerminalLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-[#c9a96e] px-4 py-3 text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#b8945c] disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-[#c9a96e] px-4 py-3 text-[13px] font-bold uppercase tracking-wider text-[var(--navy)] transition-colors hover:bg-[#b8945c] disabled:opacity-60"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
         </button>
@@ -101,7 +101,7 @@ export function PaywallScreen() {
     <div className="dark terminal-shell flex min-h-screen flex-col bg-background text-foreground font-sans antialiased">
       <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-3 md:px-6">
-          <Link to="/" className="font-display text-lg text-gold hover:opacity-90">
+          <Link to="/" className="font-display text-lg text-[var(--gold-ink)] hover:opacity-90">
             Voyyage
           </Link>
           <span className="text-muted-foreground text-sm hidden sm:inline">Terminal</span>
@@ -130,7 +130,7 @@ export function PaywallScreen() {
 
           <div className="flex justify-center">
             <div className="w-full max-w-sm rounded-lg border border-gold/40 bg-card/30 p-7">
-              <div className="text-[11px] uppercase tracking-widest text-gold mb-2">
+              <div className="text-[11px] uppercase tracking-widest text-[var(--gold-ink)] mb-2">
                 Voyyager Plan
               </div>
               <div className="font-display text-4xl font-light mb-1">₹15,000</div>
@@ -147,13 +147,13 @@ export function PaywallScreen() {
                 href={INSIGHTPIER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-[#c9a96e] px-4 py-3.5 text-center text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#b8945c]"
+                className="flex w-full items-center justify-center gap-2 rounded-[4px] bg-[#c9a96e] px-4 py-3.5 text-center text-[13px] font-bold uppercase tracking-wider text-[var(--navy)] transition-colors hover:bg-[#b8945c]"
               >
                 Get Started <ArrowRight size={16} />
               </a>
               <p className="text-xs text-muted-foreground text-center mt-4">
                 Contact us at{" "}
-                <a href="mailto:support@voyyageinvest.com" className="text-gold hover:underline">
+                <a href="mailto:support@voyyageinvest.com" className="text-[var(--gold-ink)] hover:underline">
                   support@voyyageinvest.com
                 </a>
               </p>

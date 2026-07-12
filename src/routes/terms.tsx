@@ -55,36 +55,37 @@ function TermsAndConditionsPage() {
     <div className="min-h-screen bg-[var(--background)]">
       <Nav />
 
-      {/* Hero Header */}
-      <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
-          >
-            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
-            Back to Home
-          </Link>
-          <div className="eyebrow mb-4">Legal Agreements</div>
-          <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
-            Terms & Privacy
-          </h1>
-          <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
-            Please read these Terms & Conditions and Privacy Policy carefully before using the Voyyage Capital website.
-          </p>
-        </div>
-      </section>
+      <main>
+        {/* Hero Header */}
+        <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+              Back to Home
+            </Link>
+            <div className="eyebrow-ink mb-4">Legal Agreements</div>
+            <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
+              Terms & Privacy
+            </h1>
+            <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
+              Please read these Terms & Conditions and Privacy Policy carefully before using the Voyyage Capital website.
+            </p>
+          </div>
+        </section>
 
-      {/* Main Layout */}
-      <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        {/* Main Layout */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           
           {/* Sticky Table of Contents Sidebar (Desktop only) */}
           <aside className="hidden lg:block lg:col-span-1">
             <div className="sticky top-28 self-start bg-white p-6 rounded-lg border border-[var(--gold)]/10 shadow-sm max-h-[75vh] overflow-y-auto">
-              <h3 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
+              <h2 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
                 Navigation
-              </h3>
+              </h2>
               <ul className="space-y-2">
                 {sections.map((sec) => (
                   <li key={sec.id}>
@@ -117,7 +118,7 @@ function TermsAndConditionsPage() {
                 <h2 className="font-display text-3xl text-[var(--navy)] font-bold">
                   Terms and Conditions
                 </h2>
-                <p className="text-xs text-gray-400 mt-1">These terms outline the rules and regulations for the use of this website.</p>
+                <p className="text-xs text-gray-500 mt-1">These terms outline the rules and regulations for the use of this website.</p>
               </div>
 
               {/* 1. Terms */}
@@ -151,7 +152,7 @@ function TermsAndConditionsPage() {
                       "Transfer the materials to another person or 'mirror' the materials on any other server."
                     ].map((item, idx) => (
                       <li key={idx} className="flex gap-2 items-start">
-                        <span className="font-mono text-[var(--gold)] font-bold">i{idx + 1}.</span>
+                        <span className="font-mono text-[var(--gold-ink)] font-bold">i{idx + 1}.</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -301,7 +302,7 @@ function TermsAndConditionsPage() {
                 <h2 className="font-display text-3xl text-[var(--navy)] font-bold">
                   Privacy Policy
                 </h2>
-                <p className="text-xs text-gray-400 mt-1">Your privacy is very important to us. Learn about our personal information policies.</p>
+                <p className="text-xs text-gray-500 mt-1">Your privacy is very important to us. Learn about our personal information policies.</p>
               </div>
 
               {/* General Privacy */}
@@ -355,6 +356,7 @@ function TermsAndConditionsPage() {
 
             </div>
 
+          </div>
           </div>
         </div>
       </main>
