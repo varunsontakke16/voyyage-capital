@@ -54,37 +54,38 @@ function InvestorCharterPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <Nav />
-      
-      {/* Hero Header */}
-      <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
-          >
-            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
-            Back to Home
-          </Link>
-          <div className="eyebrow mb-4">SEBI Compliance</div>
-          <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
-            Investor Charter
-          </h1>
-          <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
-            In respect of Research Analysts (RAs) registered with the Securities and Exchange Board of India (SEBI).
-          </p>
-        </div>
-      </section>
 
-      {/* Main Layout */}
-      <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+      <main>
+        {/* Hero Header */}
+        <section className="relative bg-gradient-to-b from-[var(--snow)] to-white pt-36 pb-20 border-b border-[var(--gold)]/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-[var(--gold)] transition-colors mb-6 font-medium group"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+              Back to Home
+            </Link>
+            <div className="eyebrow-ink mb-4">SEBI Compliance</div>
+            <h1 className="font-display font-light text-[#1A1A1A] text-4xl sm:text-5xl md:text-6xl tracking-tight max-w-4xl leading-tight">
+              Investor Charter
+            </h1>
+            <p className="mt-4 text-md text-gray-500 max-w-2xl font-sans">
+              In respect of Research Analysts (RAs) registered with the Securities and Exchange Board of India (SEBI).
+            </p>
+          </div>
+        </section>
+
+        {/* Main Layout */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           
           {/* Sticky Table of Contents Sidebar (Desktop only) */}
           <aside className="hidden lg:block lg:col-span-1">
             <div className="sticky top-28 self-start bg-white p-6 rounded-lg border border-[var(--gold)]/10 shadow-sm">
-              <h3 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
+              <h2 className="font-display text-lg text-[var(--navy)] font-medium mb-4 pb-2 border-b border-[var(--gold)]/10">
                 Contents
-              </h3>
+              </h2>
               <ul className="space-y-3">
                 {sections.map((sec) => (
                   <li key={sec.id}>
@@ -107,7 +108,7 @@ function InvestorCharterPage() {
             {/* Section A: Vision and Mission */}
             <section id="vision-mission" className="scroll-mt-28 space-y-8">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section A</div>
+                <div className="eyebrow-ink mb-2">Section A</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Vision and Mission Statements for Investors
                 </h2>
@@ -143,7 +144,7 @@ function InvestorCharterPage() {
             {/* Section B: Details of Business Transacted */}
             <section id="business-transacted" className="scroll-mt-28 space-y-6">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section B</div>
+                <div className="eyebrow-ink mb-2">Section B</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Details of Business Transacted by the Research Analyst with Respect to Investors
                 </h2>
@@ -178,7 +179,7 @@ function InvestorCharterPage() {
             {/* Section C: Details of Services Provided */}
             <section id="services" className="scroll-mt-28 space-y-8">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section C</div>
+                <div className="eyebrow-ink mb-2">Section C</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Details of Services & Disclosures Provided to Investors
                 </h2>
@@ -213,7 +214,7 @@ function InvestorCharterPage() {
                       To ensure modern transparency, the Research Analyst shall explicitly disclose the extent of usage of Artificial Intelligence (AI) tools in providing research services.
                     </p>
                   </div>
-                  <div className="flex gap-3 items-center text-xs text-[var(--gold)] font-semibold mt-4">
+                  <div className="flex gap-3 items-center text-xs text-[var(--gold-ink)] font-semibold mt-4">
                     <Info size={16} />
                     <span>Always fully disclosed to active clients</span>
                   </div>
@@ -253,7 +254,7 @@ function InvestorCharterPage() {
             {/* Section D: Grievance Redressal Mechanism */}
             <section id="grievances" className="scroll-mt-28 space-y-8">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section D</div>
+                <div className="eyebrow-ink mb-2">Section D</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Grievance Redressal Mechanism
                 </h2>
@@ -262,7 +263,7 @@ function InvestorCharterPage() {
               <div className="bg-amber-50/50 border border-amber-200/60 rounded-lg p-6 flex gap-4 items-start">
                 <ShieldAlert className="text-amber-600 shrink-0 mt-1" size={20} />
                 <div>
-                  <h4 className="text-sm font-semibold text-amber-900">Timeline for Resolution</h4>
+                  <h3 className="text-sm font-semibold text-amber-900">Timeline for Resolution</h3>
                   <p className="text-xs text-amber-800 mt-1 leading-relaxed">
                     Any complaint or grievance raised by an investor must be addressed and resolved by the Research Analyst immediately, and in any case, not later than <strong>21 days</strong> from the date of receipt.
                   </p>
@@ -365,7 +366,7 @@ function InvestorCharterPage() {
             {/* Section E: Rights of Investors */}
             <section id="rights" className="scroll-mt-28 space-y-6">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section E</div>
+                <div className="eyebrow-ink mb-2">Section E</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Rights of Investors
                 </h2>
@@ -404,7 +405,7 @@ function InvestorCharterPage() {
             {/* Section F: Expectations from Investors */}
             <section id="expectations" className="scroll-mt-28 space-y-8">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section F</div>
+                <div className="eyebrow-ink mb-2">Section F</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Expectations from Investors (Responsibilities)
                 </h2>
@@ -434,7 +435,7 @@ function InvestorCharterPage() {
                       "Inform SEBI immediately if a Research Analyst offers assured or guaranteed returns."
                     ].map((item, idx) => (
                       <li key={idx} className="flex gap-2 items-start">
-                        <span className="font-mono font-bold text-emerald-600 shrink-0 w-4 text-right">{idx + 1}.</span>
+                        <span className="font-mono font-bold text-emerald-700 shrink-0 w-4 text-right">{idx + 1}.</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -479,7 +480,7 @@ function InvestorCharterPage() {
             {/* Section G: Complaint Data Display */}
             <section id="complaints" className="scroll-mt-28 space-y-8">
               <div className="border-b border-gray-100 pb-4">
-                <div className="eyebrow mb-2">Section G</div>
+                <div className="eyebrow-ink mb-2">Section G</div>
                 <h2 className="font-display text-3xl text-[var(--navy)] font-semibold">
                   Complaint Data to be Displayed by Research Analysts
                 </h2>
@@ -653,6 +654,7 @@ function InvestorCharterPage() {
               </div>
             </section>
 
+          </div>
           </div>
         </div>
       </main>

@@ -30,7 +30,7 @@ export function Hero() {
         <div className="marquee">
           <div className="marquee-track">
             {[...tickers, ...tickers].map((t, i) => (
-              <span key={i} className="text-xs tracking-widest text-[#475569] font-mono uppercase">
+              <span key={i} className="text-xs tracking-widest text-[var(--text-muted-dark)] font-mono uppercase">
                 {t}
               </span>
             ))}
