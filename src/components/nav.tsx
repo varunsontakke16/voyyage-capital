@@ -15,6 +15,7 @@ const links: NavLink[] = [
   { to: "/#philosophy", label: "Philosophy" },
   { to: "/#plans", label: "Plans" },
   { to: "/#start", label: "Connect" },
+  { to: "/#b2b", label: "B2B" },
   { href: "https://insightpier.com/analyst/varunsontakke/articles/manage", label: "Blogs" },
   { to: "/analytics", label: "Terminal", router: true, button: true },
 ];
